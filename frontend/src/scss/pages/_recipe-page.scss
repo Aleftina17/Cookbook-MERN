@@ -66,6 +66,10 @@
         &__row {
             display: flex;
             gap: 2rem;
+
+            a{
+                text-decoration: underline;
+            }
         }
 
         &__ingredients {

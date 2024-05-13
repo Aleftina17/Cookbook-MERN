@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BackButton from "./../components/BackButton";
+import BackButton from "../components/BackButton";
 import CheckboxExample from "../components/CheckboxExample";
 
 export const CreateRecipe = () => {

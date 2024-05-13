@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('')
 
     useEffect(() => {
         setLoading(true);
@@ -21,12 +22,25 @@ const Recipes = () => {
             });
     }, []);
 
+    const handleSearchInputChange = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const filteredRecipes = recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="recipes">
             <div className="container">
                 <div className="recipes_top">
                     <div className="recipes_search">
-                        <input type="search" placeholder="Search for recipes" />
+                        <input 
+                        type="search" 
+                        placeholder="Search for recipes"
+                        value={searchQuery}
+                        onChange={handleSearchInputChange}
+                         />
                         <button>
                             <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="25" cy="25" r="25" fill="#97B04F" />
@@ -57,7 +71,7 @@ const Recipes = () => {
                     <Loader />
                 ) : (
                     <div className="recipes_items">
-                        {recipes.map((recipe, index) => (
+                        {filteredRecipes.map((recipe, index) => (
                             <Link to={`/recipes/details/${recipe._id}`} className="recipes_item" key={recipe._id}>
                                 <div className="recipes_item__img">
                                     <img src={recipe.imageUrl} alt={recipe.title} />

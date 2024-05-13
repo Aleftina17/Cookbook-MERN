@@ -47,7 +47,7 @@ const Recipe = () => {
                                 <div className="ingredients-list">
                                     <ul>
                                         {recipe.ingredients.map((item) => (
-                                            <li>
+                                            <li key={item}>
                                                 <label>
                                                     <input type="checkbox" />
                                                     <div className="checkbox-icon"></div>
@@ -77,7 +77,7 @@ const Recipe = () => {
                         <div className="recipe-details_item__steps">
                             <ul className="steps">
                                 {recipe.cookingSteps.map((step, index) => (
-                                    <li className="steps__item" key={step.step}>
+                                    <li className="steps__item" key={index}>
                                         <div className="steps__item_num">Step {index + 1}</div>
                                         <div className="steps__item_text">{step.description}</div>
                                     </li>
