@@ -1,0 +1,39 @@
+.auth{
+    background-image: url("./assets/recipes/cookbook-bg.jpg");
+    background-repeat: repeat-y;
+    background-size: cover;
+    padding: 12rem 0;
+    min-height: 100vh;
+
+    .container{
+        background-color: #f9f9f9;
+        border-radius: 4rem;
+        box-shadow: 0 0 1rem 1rem rgba(106, 106, 106, 0.25);
+        overflow: hidden;
+        padding: 3rem 8rem 11rem;
+    }
+
+    &_form{
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        font-size: 2rem;
+
+        &__title{
+            font-size: 4rem;
+            align-self: center;
+        }
+
+        &__inputs{
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        &__input{
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+}

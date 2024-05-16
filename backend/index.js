@@ -1,9 +1,9 @@
 import express from "express";
-import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
-import { Recipe } from "./models/recipeModel.js";
-import recipesRoute from "./routes/recipesRoute.js";
 import cors from 'cors'
+import { PORT, mongoDBURL } from "./config.js";
+import { recipesRouter } from "./routes/recipesRoute.js";
+import { usersRouter } from "./routes/usersRoute.js"
 
 const app = express();
 app.use(express.json())
@@ -11,12 +11,8 @@ app.use(express.json())
 //cors: allow all origins
 app.use(cors())
 
-app.get("/", (request, response) => {
-    console.log(request);
-    return response.status(234).send("hello");
-});
-
-app.use('/recipes', recipesRoute)
+app.use('/recipes', recipesRouter)
+app.use('/auth', usersRouter)
 
 mongoose
     .connect(mongoDBURL)
