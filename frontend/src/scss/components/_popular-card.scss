@@ -1,0 +1,42 @@
+.popular-card{
+    width: 100%;
+    height: 37.5rem;
+    border-radius: 1.2rem;
+    border: 0.1rem solid #DBDFD0;
+    padding: 4rem 4rem 3.2rem;
+    background-color: #fff;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    &_img{
+        background-color: #97B04F;
+        border-radius: 100%;
+        width: 10rem;
+        height: 10rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+
+    &_title{
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    &_desc{
+        margin-bottom: 3rem;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+        text-align: center;
+    }
+
+    &_link{
+        color: #97B04F;
+        font-weight: 700;
+        font-size: 1.6rem;
+    }
+}
