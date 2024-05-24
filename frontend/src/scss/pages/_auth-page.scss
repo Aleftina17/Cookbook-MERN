@@ -11,6 +11,30 @@
         box-shadow: 0 0 1rem 1rem rgba(106, 106, 106, 0.25);
         overflow: hidden;
         padding: 3rem 8rem 11rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &_switcher{
+        display: flex;
+        background-color: #fff;
+        border: 0.1rem solid #dbdfd0;
+        border-radius: 7.2rem;
+        overflow: hidden;
+        margin-bottom: 4rem;
+
+        &__item{
+            font-size: 3rem;
+            width: 26rem;
+            text-align: center;
+            padding: 2rem 4rem;
+
+            &.active{
+                background-color: #dbdfd0;
+            }
+            
+        }
     }
 
     &_form{
@@ -19,8 +43,11 @@
         gap: 4rem;
         font-size: 2rem;
 
-        &__title{
-            font-size: 4rem;
+        &.active{
+        }
+
+        &__desc{
+            font-size: 2rem;
             align-self: center;
         }
 

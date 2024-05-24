@@ -21,11 +21,13 @@ const Register = () => {
     }
 
     return <AuthForm 
+    id='registerFrom'
     username={username} 
     setUsername={setUsername} 
     password={password} 
     setPassword={setPassword} 
-    label="Register"
+    description="Create an account by entering your username and password"
+    label= 'Register'
     onSubmit={onSubmit}
      />;
 };

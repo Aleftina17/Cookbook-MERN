@@ -28,11 +28,13 @@ const Login = () => {
     }
 
     return <AuthForm 
+    id='loginFrom'
     username={username} 
     setUsername={setUsername} 
     password={password} 
     setPassword={setPassword} 
-    label="Login"
+    description="Please enter your username and password to log in"
+    label='Login'
     onSubmit={onSubmit}
     />;
 };

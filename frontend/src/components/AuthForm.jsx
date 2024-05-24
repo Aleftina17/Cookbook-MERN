@@ -1,9 +1,9 @@
 import React from 'react'
 
-const AuthForm = ({username, setUsername, password, setPassword, label, onSubmit}) => {
+const AuthForm = ({username, setUsername, password, setPassword, label, onSubmit, id, description}) => {
   return (
-    <form className="auth_form" onSubmit={onSubmit}>
-            <div className="auth_form__title">{label}</div>
+    <form className="auth_form" id={id} onSubmit={onSubmit}>
+            <div className="auth_form__desc">{description}</div>
             <div className="auth_form__inputs">
                 <div className="auth_form__input">
                     <label htmlFor="username">Username:</label>
