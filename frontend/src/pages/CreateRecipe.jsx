@@ -1,26 +1,44 @@
 import React, { useState } from "react";
 import BackButton from "../components/BackButton";
-import CheckboxExample from "../components/CheckboxExample";
+import CheckboxList from "../components/CheckboxList";
+import RadioList from "../components/RadioList";
 
 export const CreateRecipe = () => {
-    // const [title, setTitle] = useState("");
-    // const [categories, setCategories] = useState([""]);
-    // const [ingredients, setIngredients] = useState([""]);
-    // const [cookingTime, setCookingTime] = useState("");
-    // const [imageUrl, setImageUrl] = useState("");
-    // const [sourceUrl, setSourceUrl] = useState("");
-    // const [cookingSteps, setCookingSteps] = useState([""]);
-    // const [loading, setLoading] = useState(false);
-    // const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState({});
+    const [selectedCategories, setSelectedCategories] = useState([1, 2]);
+    const [selectedTime, setSelectedTime] = useState(2);
 
     const toggleDropdown = (dropdownId) => {
         setDropdownOpen((prevOpen) => {
-            const updatedOpenState = Object.fromEntries(
-                Object.entries(prevOpen).map(([key, value]) => [key, key === dropdownId ? !value : false])
-            );
-            return updatedOpenState;
+            const updatedOpen = { ...prevOpen };
+            Object.keys(prevOpen).forEach((id) => {
+                if (id !== dropdownId) {
+                    updatedOpen[id] = false;
+                }
+            });
+            updatedOpen[dropdownId] = !prevOpen[dropdownId];
+            return updatedOpen;
         });
+    };
+
+    const handleCategoryChange = (categories) => {
+        setSelectedCategories(categories);
+    };
+
+    const handleTimeChange = (id) => {
+        setSelectedTime(id);
+    };
+
+    const getSelectedCategoryLabels = () => {
+        return selectedCategories
+            .map((categoryId) => checkboxCategoriesOptions.find((option) => option.id === categoryId)?.label)
+            .filter((label) => label)
+            .join(", ");
+    };
+
+    const getSelectedTimeLabel = () => {
+        const selectedOption = radioTimeOptions.find((option) => option.id === selectedTime);
+        return selectedOption ? selectedOption.label : "Select time";
     };
 
     const checkboxCategoriesOptions = [
@@ -32,14 +50,16 @@ export const CreateRecipe = () => {
         { id: 6, label: "Salad" },
         { id: 7, label: "Pastry" },
         { id: 8, label: "Mexican" },
+        { id: 9, label: "Indian" },
     ];
 
-    const checkboxTimeOptions = [
+    const radioTimeOptions = [
         { id: 1, label: "less than 30 min" },
         { id: 2, label: "30 - 60 min" },
         { id: 3, label: "60 - 120 min" },
         { id: 4, label: "more than 120 min" },
     ];
+
 
     return (
         <div className="create">
@@ -56,7 +76,7 @@ export const CreateRecipe = () => {
                             <span>Title</span>
                         </div>
                         <div className="input">
-                            <input type="text" placeholder="Enter recipe title" />
+                            <input id="title" type="text" placeholder="Enter recipe title" />
                         </div>
                     </div>
 
@@ -65,14 +85,16 @@ export const CreateRecipe = () => {
                             <b className="required">*</b>
                             <span>Choose categories</span>
                         </div>
-                        <div className={`dropdown ${dropdownOpen['categories'] ? 'open' : ''}`}>
-                            <div className='dropdown_top input' onClick={() => toggleDropdown('categories')}>
-                                <span>Main meal, Asian</span>
-                                <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className={`dropdown ${dropdownOpen["categories"] ? "open" : ""}`}>
+                            <div className="dropdown_top input" onClick={() => toggleDropdown("categories")}>
+                                <span>{getSelectedCategoryLabels() || "Select at least one category"}</span>
+                                <svg viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.5 12.087L15 19.9131L22.5 12.087" stroke="#474747" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
-                            <CheckboxExample checkboxOptions={checkboxCategoriesOptions} />
+                            <div className="dropdown_content">
+                                <CheckboxList checkboxOptions={checkboxCategoriesOptions} onChange={handleCategoryChange} />
+                            </div>
                         </div>
                     </div>
 
@@ -81,14 +103,16 @@ export const CreateRecipe = () => {
                             <b className="required">*</b>
                             <span>Choose time</span>
                         </div>
-                        <div className={`dropdown ${dropdownOpen['time'] ? 'open' : ''}`}>
-                            <div className='dropdown_top input' onClick={() => toggleDropdown('time')}>
-                                <span>30 - 60 min</span>
-                                <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className={`dropdown ${dropdownOpen["time"] ? "open" : ""}`}>
+                            <div className="dropdown_top input" onClick={() => toggleDropdown("time")}>
+                                <span>{getSelectedTimeLabel()}</span>
+                                <svg viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.5 12.087L15 19.9131L22.5 12.087" stroke="#474747" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
-                            <CheckboxExample checkboxOptions={checkboxTimeOptions} />
+                            <div className="dropdown_content">
+                                <RadioList radioOptions={radioTimeOptions} onChange={handleTimeChange} />
+                            </div>
                         </div>
                     </div>
 
@@ -114,3 +138,5 @@ export const CreateRecipe = () => {
         </div>
     );
 };
+
+export default CreateRecipe;

@@ -12,14 +12,14 @@
         padding: 3rem 8rem 11rem;
         position: relative;
 
-        &::before{
-            content: '';
+        &::before {
+            content: "";
             position: absolute;
             top: 0;
             bottom: 0;
             left: 0;
             width: 40rem;
-            background-color: #DFD9C9;
+            background-color: #dfd9c9;
             opacity: 0.7;
             z-index: 1;
         }
@@ -68,8 +68,12 @@
             display: flex;
             gap: 2rem;
 
-            a{
+            a {
                 text-decoration: underline;
+                max-width: 50rem;
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -141,7 +145,7 @@
         }
     }
 
-    .btn_back{
+    .btn_back {
         position: relative;
         z-index: 1;
     }

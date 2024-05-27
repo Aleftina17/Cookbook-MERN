@@ -1,5 +1,7 @@
 import express from "express";
 import { RecipeModel } from "../models/recipeModel.js";
+import mongoose from "mongoose";
+import { UserModel } from "../models/userModel.js";
 
 const router = express.Router();
 
@@ -13,13 +15,7 @@ router.post("/", async (req, res) => {
         }
 
         const newRecipe = {
-            title: req.body.title,
-            categories: req.body.categories,
-            ingredients: req.body.ingredients,
-            cookingTime: req.body.cookingTime,
-            imageUrl: req.body.imageUrl,
-            sourceUrl: req.body.sourceUrl,
-            cookingSteps: req.body.cookingSteps,
+            ...req.body,
         };
 
         const recipe = await RecipeModel.create(newRecipe);
@@ -98,5 +94,44 @@ router.delete("/:id", async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 });
+
+//save recipe
+router.put("/", async (req, res) => {
+    try {
+        const recipe = await RecipeModel.findById(req.body.recipeID);
+        const user = await UserModel.findById(req.body.userID);
+        user.savedRecipes.push(recipe)
+        await user.save()
+        res.json({savedRecipes: user.savedRecipes})
+    } catch (error) {
+        console.log(err.message);
+        res.status(500).send({ message: error.message });
+    }
+});
+
+//show saved recipes ids
+router.get('/savedRecipes/ids', async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.body.userID)
+        res.json({savedRecipes: user?.savedRecipes})
+    } catch (error) {
+        console.log(err.message);
+        res.status(500).send({ message: error.message });
+    }
+})
+
+//show saved recipes
+router.get('/savedRecipes', async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.body.userID)
+        const savedRecipes = await RecipeModel.find({
+            _id: {$in: user.savedRecipes} // найти среди всех рецептов те, id которых есть в savedRecipes данного юзера
+        })
+        res.json({savedRecipes})
+    } catch (error) {
+        console.log(err.message);
+        res.status(500).send({ message: error.message });
+    }
+})
 
 export { router as recipesRouter };
