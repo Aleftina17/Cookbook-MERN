@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
+import Pagination from "../components/Pagination";
 
 const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('')
+    const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recipesPerPage] = useState(1);
 
     useEffect(() => {
         setLoading(true);
@@ -23,24 +26,27 @@ const Recipes = () => {
     }, []);
 
     const handleSearchInputChange = (e) => {
-        setSearchQuery(e.target.value)
-    }
+        setSearchQuery(e.target.value);
+    };
 
-    const filteredRecipes = recipes.filter((recipe) =>
-        recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const lastRecipeIndex = currentPage * recipesPerPage;
+    const firstRecipeIndex = lastRecipeIndex - recipesPerPage;
+    const currentRecipes = filteredRecipes.slice(firstRecipeIndex, lastRecipeIndex);
+
+    const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
 
     return (
         <div className="recipes">
             <div className="container">
                 <div className="recipes_top">
                     <div className="recipes_search">
-                        <input 
-                        type="search" 
-                        placeholder="Search for recipes"
-                        value={searchQuery}
-                        onChange={handleSearchInputChange}
-                         />
+                        <input type="search" placeholder="Search for recipes" value={searchQuery} onChange={handleSearchInputChange} />
                         <button>
                             <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="25" cy="25" r="25" fill="#97B04F" />
@@ -71,7 +77,7 @@ const Recipes = () => {
                     <Loader />
                 ) : (
                     <div className="recipes_items">
-                        {filteredRecipes.map((recipe, index) => (
+                        {currentRecipes.map((recipe, _) => (
                             <Link to={`/recipes/details/${recipe._id}`} className="recipes_item" key={recipe._id}>
                                 <div className="recipes_item__img">
                                     <img src={recipe.imageUrl} alt={recipe.title} />
@@ -92,28 +98,11 @@ const Recipes = () => {
                     </div>
                 )}
 
-                <div className="recipes_pagination">
-                    <button className="pagination-btn pagination-btn-prev">
-                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.06 12L11 11.06L7.94667 8L11 4.94L10.06 4L6.06 8L10.06 12Z" fill="#525252" />
-                        </svg>
-                    </button>
-
-                    <button className="pagination-btn pagination-btn-num active">1</button>
-                    <button className="pagination-btn pagination-btn-num">2</button>
-                    <button className="pagination-btn pagination-btn-num">3</button>
-
-                    <button className="pagination-btn pagination-btn-next">
-                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6.94 4L6 4.94L9.05333 8L6 11.06L6.94 12L10.94 8L6.94 4Z" fill="#525252" />
-                        </svg>
-                    </button>
-                </div>
+                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                
             </div>
         </div>
     );
 };
 
 export default Recipes;
-
-
