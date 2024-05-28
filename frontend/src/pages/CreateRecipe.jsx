@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BackButton from "../components/BackButton";
 import CheckboxList from "../components/CheckboxList";
 import RadioList from "../components/RadioList";
@@ -7,39 +7,6 @@ export const CreateRecipe = () => {
     const [dropdownOpen, setDropdownOpen] = useState({});
     const [selectedCategories, setSelectedCategories] = useState([1, 2]);
     const [selectedTime, setSelectedTime] = useState(2);
-
-    const toggleDropdown = (dropdownId) => {
-        setDropdownOpen((prevOpen) => {
-            const updatedOpen = { ...prevOpen };
-            Object.keys(prevOpen).forEach((id) => {
-                if (id !== dropdownId) {
-                    updatedOpen[id] = false;
-                }
-            });
-            updatedOpen[dropdownId] = !prevOpen[dropdownId];
-            return updatedOpen;
-        });
-    };
-
-    const handleCategoryChange = (categories) => {
-        setSelectedCategories(categories);
-    };
-
-    const handleTimeChange = (id) => {
-        setSelectedTime(id);
-    };
-
-    const getSelectedCategoryLabels = () => {
-        return selectedCategories
-            .map((categoryId) => checkboxCategoriesOptions.find((option) => option.id === categoryId)?.label)
-            .filter((label) => label)
-            .join(", ");
-    };
-
-    const getSelectedTimeLabel = () => {
-        const selectedOption = radioTimeOptions.find((option) => option.id === selectedTime);
-        return selectedOption ? selectedOption.label : "Select time";
-    };
 
     const checkboxCategoriesOptions = [
         { id: 1, label: "Main meal" },
@@ -60,6 +27,102 @@ export const CreateRecipe = () => {
         { id: 4, label: "more than 120 min" },
     ];
 
+    const toggleDropdown = (dropdownId) => {
+        setDropdownOpen((prevOpen) => {
+            const updatedOpen = { ...prevOpen };
+            Object.keys(prevOpen).forEach((id) => {
+                if (id !== dropdownId) {
+                    updatedOpen[id] = false;
+                }
+            });
+            updatedOpen[dropdownId] = !prevOpen[dropdownId];
+            return updatedOpen;
+        });
+    };
+
+    const handleCategoryChange = (categories) => {
+        const updatedCategories = categories.map((categoryId) => checkboxCategoriesOptions.find((option) => option.id === categoryId)?.label);
+        setSelectedCategories(categories);
+        setRecipe((prevRecipe) => ({
+            ...prevRecipe,
+            categories: updatedCategories,
+        }));
+    };
+
+    const getSelectedCategoryLabels = () => {
+        return selectedCategories
+            .map((categoryId) => checkboxCategoriesOptions.find((option) => option.id === categoryId)?.label)
+            .filter((label) => label)
+            .join(", ");
+    };
+
+    const handleTimeChange = (id) => {
+        const selectedOption = radioTimeOptions.find((option) => option.id === id);
+        setSelectedTime(id);
+        setRecipe((prevRecipe) => ({
+            ...prevRecipe,
+            cookingTime: selectedOption ? selectedOption.label : "",
+        }));
+    };
+
+    const getSelectedTimeLabel = () => {
+        const selectedOption = radioTimeOptions.find((option) => option.id === selectedTime);
+        return selectedOption ? selectedOption.label : "Select time";
+    };
+
+    //creating recipe
+    const [recipe, setRecipe] = useState({
+        title: "",
+        categories: ["Main Meal", "Asian"],
+        ingredients: [''],
+        cookingTime: "60 - 120 min",
+        imageUrl: "",
+        sourceUrl: "",
+        cookingSteps: [''],
+        userOwner: 0,
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setRecipe({
+            ...recipe,
+            [name]: value,
+        });
+    };
+
+    const addIngredient = (e) => {
+        e.preventDefault();
+        setRecipe({
+            ...recipe,
+            ingredients: [...recipe.ingredients, ""],
+        });
+    };
+
+    const handleIngredientChange = (e, index) => {
+        const { value } = e.target;
+        const ingredients = recipe.ingredients;
+        ingredients[index] = value;
+        setRecipe({ ...recipe, ingredients });
+    };
+
+    const addStep = (e) => {
+        e.preventDefault();
+        setRecipe({
+            ...recipe,
+            cookingSteps: [...recipe.cookingSteps, ""],
+        });
+    };
+
+    const handleStepChange = (e, index) => {
+        const { value } = e.target;
+        const cookingSteps = recipe.cookingSteps;
+        cookingSteps[index] = value;
+        setRecipe({ ...recipe, cookingSteps });
+    };
+
+    useEffect(() => {
+        console.log(recipe);
+    }, [recipe]);
 
     return (
         <div className="create">
@@ -70,16 +133,18 @@ export const CreateRecipe = () => {
                 </div>
 
                 <form className="create_form">
+                    {/* title */}
                     <div className="create_form__item">
                         <div className="title">
                             <b className="required">*</b>
                             <span>Title</span>
                         </div>
                         <div className="input">
-                            <input id="title" type="text" placeholder="Enter recipe title" />
+                            <input id="titleInput" name="title" type="text" placeholder="Enter recipe title" onChange={handleChange} />
                         </div>
                     </div>
 
+                    {/* categories */}
                     <div className="create_form__item">
                         <div className="title">
                             <b className="required">*</b>
@@ -87,7 +152,7 @@ export const CreateRecipe = () => {
                         </div>
                         <div className={`dropdown ${dropdownOpen["categories"] ? "open" : ""}`}>
                             <div className="dropdown_top input" onClick={() => toggleDropdown("categories")}>
-                                <span>{getSelectedCategoryLabels() || "Select at least one category"}</span>
+                                <input readOnly id="categoriesInput" name="categories" type="text" value={getSelectedCategoryLabels()} placeholder="Select at least one category" />
                                 <svg viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.5 12.087L15 19.9131L22.5 12.087" stroke="#474747" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
@@ -98,6 +163,7 @@ export const CreateRecipe = () => {
                         </div>
                     </div>
 
+                    {/* cooking time */}
                     <div className="create_form__item">
                         <div className="title">
                             <b className="required">*</b>
@@ -105,7 +171,7 @@ export const CreateRecipe = () => {
                         </div>
                         <div className={`dropdown ${dropdownOpen["time"] ? "open" : ""}`}>
                             <div className="dropdown_top input" onClick={() => toggleDropdown("time")}>
-                                <span>{getSelectedTimeLabel()}</span>
+                                <input id="timeInput" name="cookingTime" readOnly type="text" value={getSelectedTimeLabel()} />
                                 <svg viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.5 12.087L15 19.9131L22.5 12.087" stroke="#474747" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
@@ -121,7 +187,7 @@ export const CreateRecipe = () => {
                             <span>Image URL</span>
                         </div>
                         <div className="input">
-                            <input type="text" placeholder="Provide image URL" />
+                            <input id="imageInput" name="imageUrl" type="text" placeholder="Provide image URL" onChange={handleChange} />
                         </div>
                     </div>
 
@@ -130,9 +196,80 @@ export const CreateRecipe = () => {
                             <span>Video/recipe URL</span>
                         </div>
                         <div className="input">
-                            <input type="text" placeholder="Provide video or recipe URL" />
+                            <input id="sourceInput" name="sourceUrl" type="text" placeholder="Provide video or recipe URL" onChange={handleChange} />
                         </div>
                     </div>
+
+                    {/* ingredients */}
+
+                    <div className="create_form__item">
+                        <div className="title">
+                            <b class="required">*</b>
+                            <span>Ingredients</span>
+                        </div>
+                        {recipe.ingredients.map((ingredient, index) => (
+                            <input
+                                placeholder="Enter ingredient (e.g. 'Milk, 100ml')"
+                                className="input"
+                                key={index}
+                                type="text"
+                                name="ingredients"
+                                value={ingredient}
+                                onChange={(e) => handleIngredientChange(e, index)}
+                            />
+                        ))}
+                        <button className="btn btn_add" onClick={addIngredient}>
+                            <span>Add ingredient</span>
+                            <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M15 10V20M10 15H20M27.5 15C27.5 21.9036 21.9036 27.5 15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15Z"
+                                    stroke="#474747"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* steps */}
+
+                    <div className="create_form__item">
+                        <div className="title">
+                            <b class="required">*</b>
+                            <span>Cooking steps</span>
+                        </div>
+                        {recipe.cookingSteps.map((cookingStep, index) => (
+                            <div className="textarea-wrapper">
+                                <span>Step {index + 1}</span>
+                                <textarea
+                                placeholder="Describe step"
+                                className="textarea"
+                                key={index}
+                                type="text"
+                                name="cookingSteps"
+                                value={cookingStep}
+                                onChange={(e) => handleStepChange(e, index)}
+                            />
+                            </div>
+                        ))}
+                        <button className="btn btn_add" onClick={addStep}>
+                            <span>Add step</span>
+                            <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M15 10V20M10 15H20M27.5 15C27.5 21.9036 21.9036 27.5 15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15Z"
+                                    stroke="#474747"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <button className="btn btn_primary" type="submit">
+                        Save recipe
+                    </button>
                 </form>
             </div>
         </div>

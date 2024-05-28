@@ -9,7 +9,7 @@ const Recipes = () => {
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [recipesPerPage] = useState(1);
+    const [recipesPerPage] = useState(5);
 
     useEffect(() => {
         setLoading(true);
@@ -99,7 +99,7 @@ const Recipes = () => {
                 )}
 
                 <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
-                
+
             </div>
         </div>
     );

@@ -102,7 +102,7 @@ router.put("/", async (req, res) => {
         const user = await UserModel.findById(req.body.userID);
         user.savedRecipes.push(recipe)
         await user.save()
-        res.json({savedRecipes: user.savedRecipes})
+        res.status(200).json({savedRecipes: user.savedRecipes})
     } catch (error) {
         console.log(err.message);
         res.status(500).send({ message: error.message });
@@ -113,7 +113,7 @@ router.put("/", async (req, res) => {
 router.get('/savedRecipes/ids', async (req, res) => {
     try {
         const user = await UserModel.findById(req.body.userID)
-        res.json({savedRecipes: user?.savedRecipes})
+        res.status(200).json({savedRecipes: user?.savedRecipes})
     } catch (error) {
         console.log(err.message);
         res.status(500).send({ message: error.message });
@@ -127,7 +127,7 @@ router.get('/savedRecipes', async (req, res) => {
         const savedRecipes = await RecipeModel.find({
             _id: {$in: user.savedRecipes} // найти среди всех рецептов те, id которых есть в savedRecipes данного юзера
         })
-        res.json({savedRecipes})
+        res.status(200).json({savedRecipes})
     } catch (error) {
         console.log(err.message);
         res.status(500).send({ message: error.message });

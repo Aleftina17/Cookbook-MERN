@@ -26,15 +26,10 @@ const recipeSchema = mongoose.Schema({
         required: false,
     },
     cookingSteps: {
-        type: [
-            {
-                step: Number,
-                description: String,
-            }
-        ],
+        type: [String],
         required: true,
-    }
+    },
+    userOwner: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: false },
 });
 
 export const RecipeModel = mongoose.model("recipes", recipeSchema);
-

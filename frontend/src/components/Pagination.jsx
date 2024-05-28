@@ -1,27 +1,23 @@
 import React from "react";
 
-const Pagination = ({currentPage, totalPages, handlePageChange}) => {
+const Pagination = ({ currentPage, totalPages, handlePageChange }) => {
     const renderPaginationButtons = () => {
         const buttons = [];
         const maxPageButtons = 3;
-    
+
         const createPageButton = (pageNumber) => (
-            <button
-                key={pageNumber}
-                className={`pagination-btn pagination-btn-num ${currentPage === pageNumber ? "active" : ""}`}
-                onClick={() => handlePageChange(pageNumber)}
-            >
+            <button key={pageNumber} className={`pagination-btn pagination-btn-num ${currentPage === pageNumber ? "active" : ""}`} onClick={() => handlePageChange(pageNumber)}>
                 {pageNumber}
             </button>
         );
-    
+
         let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
         let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
-    
+
         if (endPage - startPage + 1 < maxPageButtons) {
             startPage = Math.max(1, endPage - maxPageButtons + 1);
         }
-    
+
         if (startPage !== 1) {
             buttons.push(createPageButton(1));
             buttons.push(<span key="first">...</span>);
@@ -33,10 +29,10 @@ const Pagination = ({currentPage, totalPages, handlePageChange}) => {
             buttons.push(<span key="last">...</span>);
             buttons.push(createPageButton(totalPages));
         }
-    
+
         return buttons;
     };
-    
+
     return (
         <div className="recipes_pagination">
             <button className="pagination-btn pagination-btn-prev" onClick={() => handlePageChange(Math.max(currentPage - 1, 1))} disabled={currentPage === 1}>

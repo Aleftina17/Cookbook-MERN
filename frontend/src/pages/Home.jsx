@@ -67,7 +67,7 @@ const Home = () => {
                     <div className="home_hero__desc">Discover delectable cuisine and unforgettable moments in our welcoming, culinary haven.</div>
                     <div className="home_hero__btns">
                         <Link to="/recipes" className="btn btn_primary">Go to cookbook</Link>
-                        <button className="btn btn_secondary">Add a recipe</button>
+                        <Link to='/recipes/create' className="btn btn_secondary">Add a recipe</Link>
                     </div>
                 </div>
             </div>
