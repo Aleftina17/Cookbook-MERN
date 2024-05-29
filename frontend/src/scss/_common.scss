@@ -166,8 +166,29 @@ body {
         }
     }
 
+    &_like{
+        position: absolute;
+        top: 4.4rem;
+        right: 5.5rem;
+
+        svg{
+            width: 3.8rem;
+            height: 3.8rem;
+
+            path{
+                stroke-width: 0.2rem;
+            }
+        }
+
+        &.liked{
+            svg path{
+                fill: #97b04f;
+            }
+        }
+    }
+
     &:hover, &:focus{
-        color: inherit;
+        
     }
 }
 

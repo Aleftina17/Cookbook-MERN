@@ -29,7 +29,7 @@ const recipeSchema = mongoose.Schema({
         type: [String],
         required: true,
     },
-    userOwner: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: false },
+    userOwner: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
 });
 
 export const RecipeModel = mongoose.model("recipes", recipeSchema);

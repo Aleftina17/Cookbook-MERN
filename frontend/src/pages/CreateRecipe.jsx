@@ -3,12 +3,16 @@ import BackButton from "../components/BackButton";
 import CheckboxList from "../components/CheckboxList";
 import RadioList from "../components/RadioList";
 import axios from "axios";
+import { useGetUserID } from "./../hooks/useGetUserID";
+import { useNavigate } from "react-router-dom";
 
 export const CreateRecipe = () => {
     const [dropdownOpen, setDropdownOpen] = useState({});
     const [selectedCategories, setSelectedCategories] = useState([1, 2]);
     const [selectedTime, setSelectedTime] = useState(2);
     const [formErrors, setFormErrors] = useState({})
+    const userID = useGetUserID()
+    const navigate = useNavigate()
 
     const checkboxCategoriesOptions = [
         { id: 1, label: "Main meal" },
@@ -90,7 +94,7 @@ export const CreateRecipe = () => {
         imageUrl: "",
         sourceUrl: "",
         cookingSteps: [""],
-        // userOwner: 0,
+        userOwner: userID,
     });
 
     const handleChange = (e) => {
@@ -214,6 +218,7 @@ export const CreateRecipe = () => {
         try {
             await axios.post("http://localhost:5555/recipes", filteredRecipe);
             alert("Recipe successfully created!");
+            navigate('/recipes')
         } catch (err) {
             console.error(err);
         }
@@ -390,7 +395,7 @@ export const CreateRecipe = () => {
                     </div>
 
                     <button className="btn btn_primary" type="submit">
-                        <span>Save recipe</span>
+                        <span>Create recipe</span>
                     </button>
                 </form>
             </div>
