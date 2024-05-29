@@ -18,10 +18,18 @@
 
         &__item{
             text-shadow: 3px 4px 3px rgba(79,75,70,0.5);
+            transition: text-shadow .2s;
+
+            &:hover, &:focus{
+                color: inherit;
+                text-shadow: none;
+            }
         }
 
         button{
             margin-left: auto;
         }
+
+        
     }
 }

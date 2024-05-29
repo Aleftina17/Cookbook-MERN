@@ -49,7 +49,7 @@ router.get("/:id", async (req, res) => {
 
         return res.status(200).json({ recipe });
     } catch (error) {
-        console.log(err.message);
+        console.log(error.message);
         res.status(500).send({ message: error.message });
     }
 });
@@ -73,7 +73,7 @@ router.put("/:id", async (req, res) => {
 
         return res.status(200).send({ message: "Recipe updated successfully" });
     } catch (error) {
-        console.log(err.message);
+        console.log(error.message);
         res.status(500).send({ message: error.message });
     }
 });
@@ -90,7 +90,7 @@ router.delete("/:id", async (req, res) => {
 
         return res.status(200).send({ message: "Recipe deleted successfully" });
     } catch (error) {
-        console.log(err.message);
+        console.log(error.message);
         res.status(500).send({ message: error.message });
     }
 });
@@ -104,7 +104,7 @@ router.put("/", async (req, res) => {
         await user.save()
         res.status(200).json({savedRecipes: user.savedRecipes})
     } catch (error) {
-        console.log(err.message);
+        console.log(error.message);
         res.status(500).send({ message: error.message });
     }
 });
@@ -115,7 +115,7 @@ router.get('/savedRecipes/ids', async (req, res) => {
         const user = await UserModel.findById(req.body.userID)
         res.status(200).json({savedRecipes: user?.savedRecipes})
     } catch (error) {
-        console.log(err.message);
+        console.log(error.message);
         res.status(500).send({ message: error.message });
     }
 })
@@ -129,7 +129,7 @@ router.get('/savedRecipes', async (req, res) => {
         })
         res.status(200).json({savedRecipes})
     } catch (error) {
-        console.log(err.message);
+        console.log(error.message);
         res.status(500).send({ message: error.message });
     }
 })

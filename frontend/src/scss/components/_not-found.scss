@@ -1,0 +1,35 @@
+.not-found{
+    background-image: url("./assets/recipes/cookbook-bg.jpg");
+    background-repeat: repeat-y;
+    background-size: cover;
+    padding: 12rem 0;
+    min-height: 100vh;
+
+    .container {
+        background-color: #f9f9f9;
+        border-radius: 4rem;
+        box-shadow: 0 0 1rem 1rem rgba(106, 106, 106, 0.25);
+        padding: 10rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4rem;
+    }
+
+    &_num{
+        font-size: 16rem;
+        font-weight: 700;
+        color: #97B04F;
+    }
+
+    &_desc{
+        font-size: 5rem;
+    }
+
+    &_desc-sm{
+        font-size: 2.4rem;
+        line-height: 130%;
+        width: 60rem;
+        text-align: center;
+    }
+}

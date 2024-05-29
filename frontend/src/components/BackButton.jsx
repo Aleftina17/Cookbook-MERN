@@ -9,7 +9,6 @@ const BackButton = ({ destination = "/recipes" }) => {
                 <path d="M25 9.58333L15 19.1667L25 28.75" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             </div>
-            
             <span>Back to Cookbook</span>
         </Link>
     );

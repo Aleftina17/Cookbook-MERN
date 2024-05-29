@@ -57,6 +57,20 @@
                 left: -1.4rem;
                 color: #97B04F;
             }
+
+            &.error{
+                .input{
+                    border: 0.1rem solid #e46f6f;
+                }
+
+                .desc{
+                    color: #e46f6f;
+                }
+
+                .textarea{
+                    border: 0.1rem solid #e46f6f; 
+                }
+            }
         }
     }
 }

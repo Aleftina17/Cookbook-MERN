@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import BackButton from "./../components/BackButton";
 import Loader from "../components/Loader";
+import NotFound from "../components/NotFound";
 
 const Recipe = () => {
     const [recipe, setRecipe] = useState({});
@@ -24,7 +25,7 @@ const Recipe = () => {
     }, [id]);
 
     if (!recipe || !recipe.title) {
-        return <div>No recipe found</div>;
+        return <NotFound />;
     }
 
     return (

@@ -8,6 +8,14 @@
         background-color: #dfd9c9;
     }
 
+    &:hover, &:focus{
+        color: inherit;
+        
+        .recipes_item__title{
+            color: #97b04f;
+        }
+    }
+
     &__img {
         width: 24.7rem;
         height: 20.3rem;
@@ -28,6 +36,7 @@
     &__title {
         font-size: 3.6rem;
         font-weight: 600;
+        transition: color .2s;
     }
 
     &__grid {
