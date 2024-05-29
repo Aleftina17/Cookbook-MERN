@@ -121,9 +121,9 @@ router.get('/saved-recipes/ids/:userID', async (req, res) => {
 })
 
 //show saved recipes
-router.get('/saved-recipes', async (req, res) => {
+router.get('/saved-recipes/:userID', async (req, res) => {
     try {
-        const user = await UserModel.findById(req.body.userID)
+        const user = await UserModel.findById(req.params.userID)
         const savedRecipes = await RecipeModel.find({
             _id: {$in: user.savedRecipes} // найти среди всех рецептов те, id которых есть в savedRecipes данного юзера
         })
