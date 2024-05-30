@@ -2,13 +2,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 4rem auto;
 }
 
 .loader {
     width: 12rem;
     aspect-ratio: 1;
     border-radius: 50%;
-    border: 1.4rem solid lightblue;
+    border: 1.2rem solid lightblue;
     border-right-color: orange;
     animation: l2 1s infinite linear;
 }

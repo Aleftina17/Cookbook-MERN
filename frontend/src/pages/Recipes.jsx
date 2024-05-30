@@ -3,7 +3,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
-import { useGetUserID } from './../hooks/useGetUserID'
+import { useGetUserID } from "./../hooks/useGetUserID";
 
 const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
@@ -11,8 +11,8 @@ const Recipes = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(5);
-    const userID = useGetUserID()
-    const [savedRecipes, setSavedRecipes] = useState([])
+    const userID = useGetUserID();
+    const [savedRecipes, setSavedRecipes] = useState([]);
 
     useEffect(() => {
         setLoading(true);
@@ -54,19 +54,40 @@ const Recipes = () => {
     const currentRecipes = filteredRecipes.slice(firstRecipeIndex, lastRecipeIndex);
     const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
 
-    //save recipe
-    const saveRecipe = async (e, recipeID) => {
-        e.preventDefault()
-        e.stopPropagation()
-        try {
-            const response = await axios.put("http://localhost:5555/recipes", {recipeID, userID})
-            setSavedRecipes(response.data.savedRecipes)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // Save or remove recipe
+    const isRecipeSaved = (id) => savedRecipes.includes(id);
 
-    const isRecipeSaved = (id) => savedRecipes.includes(id)
+    const toggleSaveRecipe = async (e, recipeID) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            if (isRecipeSaved(recipeID)) {
+                await removeSavedRecipe(recipeID);
+            } else {
+                await saveRecipe(recipeID);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const saveRecipe = async (recipeID) => {
+        try {
+            const response = await axios.put("http://localhost:5555/recipes/save", { recipeID, userID });
+            setSavedRecipes(response.data.savedRecipes);
+        } catch (error) {
+            console.error("Save Recipe Error: ", error.response.data);
+        }
+    };
+
+    const removeSavedRecipe = async (recipeID) => {
+        try {
+            const response = await axios.put("http://localhost:5555/recipes/remove", { recipeID, userID });
+            setSavedRecipes(response.data.savedRecipes);
+        } catch (error) {
+            console.error("Remove Recipe Error: ", error.response.data);
+        }
+    };
 
     return (
         <div className="recipes">
@@ -106,7 +127,7 @@ const Recipes = () => {
                     <div className="recipes_items">
                         {currentRecipes.map((recipe, _) => (
                             <Link to={`/recipes/details/${recipe._id}`} className="recipes_item" key={recipe._id}>
-                                <button onClick={(e) => saveRecipe(e, recipe._id)} className={`btn btn_like ${isRecipeSaved(recipe._id) ? 'liked' : ''}`} disabled={isRecipeSaved(recipe._id)}>
+                                <button onClick={(e) => toggleSaveRecipe(e, recipe._id)} className={`btn btn_like ${isRecipeSaved(recipe._id) ? "liked" : ""}`}>
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             fillRule="evenodd"
