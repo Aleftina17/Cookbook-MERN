@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import AuthForm from "./AuthForm";
 import axios from 'axios'
+import { useSnackbar } from "notistack";
 
 const Register = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { enqueueSnackbar } = useSnackbar()
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -14,7 +16,7 @@ const Register = () => {
                 username,
                 password
             })
-            alert('Registration Completed. Now login.')
+            enqueueSnackbar("Registration completed. Log into your account.", {variant: 'success'})
         } catch (error) {
             console.log(error)
         }

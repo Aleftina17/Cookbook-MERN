@@ -3,12 +3,14 @@ import AuthForm from "./AuthForm";
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useSnackbar } from "notistack";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [_, setCookies] = useCookies(["access_token"])
     const navigate = useNavigate()
+    const { enqueueSnackbar } = useSnackbar()
 
     const onSubmit = async (e) => {
       e.preventDefault()
@@ -24,6 +26,7 @@ const Login = () => {
 
       } catch (error) {
         console.log(error)
+        enqueueSnackbar("User does not exist. Try another username or password.", {variant: 'error'})
       }
     }
 

@@ -5,6 +5,9 @@ import RadioList from "../components/RadioList";
 import axios from "axios";
 import { useGetUserID } from "./../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import { checkboxCategoriesOptions } from "../data/categories";
+import { radioTimeOptions } from "../data/cookingTime";
 
 export const CreateRecipe = () => {
     const [dropdownOpen, setDropdownOpen] = useState({});
@@ -13,25 +16,7 @@ export const CreateRecipe = () => {
     const [formErrors, setFormErrors] = useState({})
     const userID = useGetUserID()
     const navigate = useNavigate()
-
-    const checkboxCategoriesOptions = [
-        { id: 1, label: "Main meal" },
-        { id: 2, label: "Asian" },
-        { id: 3, label: "Italian" },
-        { id: 4, label: "Soup" },
-        { id: 5, label: "Dessert" },
-        { id: 6, label: "Salad" },
-        { id: 7, label: "Pastry" },
-        { id: 8, label: "Mexican" },
-        { id: 9, label: "Indian" },
-    ];
-
-    const radioTimeOptions = [
-        { id: 1, label: "less than 30 min" },
-        { id: 2, label: "30 - 60 min" },
-        { id: 3, label: "60 - 120 min" },
-        { id: 4, label: "more than 120 min" },
-    ];
+    const { enqueueSnackbar } = useSnackbar()
 
     const toggleDropdown = (dropdownId) => {
         setDropdownOpen((prevOpen) => {
@@ -211,16 +196,20 @@ export const CreateRecipe = () => {
         const errors = validateForm()
         if(Object.keys(errors).length > 0){
             setFormErrors(errors)
-            alert('Fill all required fields')
+            enqueueSnackbar("Fill all required fields", {variant: 'error'})
             return
         }
-
+        if (!userID){
+            enqueueSnackbar("Log in to create recipe.", {variant: 'error'})
+            return
+        }
         try {
             await axios.post("http://localhost:5555/recipes", filteredRecipe);
-            alert("Recipe successfully created!");
+            enqueueSnackbar("Recipe successfully created!", {variant: 'success'})
             navigate('/recipes')
         } catch (err) {
             console.error(err);
+            enqueueSnackbar("Error occured. Check browser console for more information", {variant: 'error'})
         }
     };
 

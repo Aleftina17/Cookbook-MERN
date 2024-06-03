@@ -1,7 +1,7 @@
 import express from "express";
 import { RecipeModel } from "../models/recipeModel.js";
-import mongoose from "mongoose";
 import { UserModel } from "../models/userModel.js";
+// import { verifyToken } from "./usersRoute.js";
 
 const router = express.Router();
 
@@ -62,15 +62,11 @@ router.get("/:id", async (req, res) => {
 //                 message: "Send all required fields!",
 //             });
 //         }
-
 //         const { id } = req.params;
-
 //         const result = await RecipeModel.findByIdAndUpdate(id, req.body);
-
 //         if (!result) {
 //             return res.status(404).json({ message: "Recipe not found" });
 //         }
-
 //         return res.status(200).send({ message: "Recipe updated successfully" });
 //     } catch (error) {
 //         console.log(error.message);
@@ -79,21 +75,21 @@ router.get("/:id", async (req, res) => {
 // });
 
 //delete recipe
-router.delete("/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const result = await RecipeModel.findByIdAndDelete(id);
+// router.delete("/:id", async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const result = await RecipeModel.findByIdAndDelete(id);
 
-        if (!result) {
-            return req.status(404).json({ message: "Recipe not found" });
-        }
+//         if (!result) {
+//             return req.status(404).json({ message: "Recipe not found" });
+//         }
 
-        return res.status(200).send({ message: "Recipe deleted successfully" });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send({ message: error.message });
-    }
-});
+//         return res.status(200).send({ message: "Recipe deleted successfully" });
+//     } catch (error) {
+//         console.log(error.message);
+//         res.status(500).send({ message: error.message });
+//     }
+// });
 
 //save recipe
 // router.put("/", async (req, res) => {

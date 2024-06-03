@@ -4,6 +4,7 @@ import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { useGetUserID } from "./../hooks/useGetUserID";
+import { useSnackbar } from "notistack";
 
 const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
@@ -13,6 +14,7 @@ const Recipes = () => {
     const [recipesPerPage] = useState(5);
     const userID = useGetUserID();
     const [savedRecipes, setSavedRecipes] = useState([]);
+    const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
         setLoading(true);
@@ -24,6 +26,7 @@ const Recipes = () => {
             })
             .catch((err) => {
                 console.log(err);
+                enqueueSnackbar("Server error.", {variant: 'error'})
                 setLoading(false);
             });
     }, []);
@@ -72,11 +75,16 @@ const Recipes = () => {
     };
 
     const saveRecipe = async (recipeID) => {
+        if (!userID){
+            enqueueSnackbar("Log in to save recipes.", {variant: 'error'})
+            return
+        }
         try {
             const response = await axios.put("http://localhost:5555/recipes/save", { recipeID, userID });
             setSavedRecipes(response.data.savedRecipes);
         } catch (error) {
             console.error("Save Recipe Error: ", error.response.data);
+            enqueueSnackbar("Failed to save the recipe.", {variant: 'error'})
         }
     };
 
@@ -86,6 +94,7 @@ const Recipes = () => {
             setSavedRecipes(response.data.savedRecipes);
         } catch (error) {
             console.error("Remove Recipe Error: ", error.response.data);
+            enqueueSnackbar("Failed to remove the recipe from saved.", {variant: 'error'})
         }
     };
 
