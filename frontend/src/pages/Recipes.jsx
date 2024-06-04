@@ -165,8 +165,7 @@ const Recipes = () => {
                         ))}
                     </div>
                 )}
-
-                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                {filteredRecipes.length > recipesPerPage && <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />}
             </div>
         </div>
     );

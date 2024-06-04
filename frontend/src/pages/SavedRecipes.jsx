@@ -64,9 +64,7 @@ const SavedRecipes = () => {
     const removeSavedRecipe = async (recipeID) => {
         try {
             const response = await axios.put("https://cookbook-mern.onrender.com/recipes/remove", { recipeID, userID });
-            setSavedRecipes((prevSavedRecipes) =>
-                prevSavedRecipes.filter((recipe) => recipe._id !== recipeID)
-            );
+            setSavedRecipes((prevSavedRecipes) => prevSavedRecipes.filter((recipe) => recipe._id !== recipeID));
         } catch (error) {
             console.error("Remove Recipe Error: ", error.response.data);
         }
@@ -116,8 +114,7 @@ const SavedRecipes = () => {
                         ))}
                     </div>
                 )}
-
-                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                {savedRecipes.length > recipesPerPage && <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />}
             </div>
         </div>
     );
