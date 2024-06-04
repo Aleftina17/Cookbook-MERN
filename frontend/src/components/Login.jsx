@@ -15,7 +15,7 @@ const Login = () => {
     const onSubmit = async (e) => {
       e.preventDefault()
       try {
-        const response = await axios.post('http://localhost:5555/auth/login', {
+        const response = await axios.post('https://cookbook-mern.onrender.com/auth/login', {
           username,
           password
         })

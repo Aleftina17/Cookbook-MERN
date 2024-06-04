@@ -204,7 +204,7 @@ export const CreateRecipe = () => {
             return
         }
         try {
-            await axios.post("http://localhost:5555/recipes", filteredRecipe);
+            await axios.post("https://cookbook-mern.onrender.com/recipes", filteredRecipe);
             enqueueSnackbar("Recipe successfully created!", {variant: 'success'})
             navigate('/recipes')
         } catch (err) {

@@ -13,7 +13,7 @@ const Recipe = () => {
     useEffect(() => {
         setLoading(true);
         axios
-            .get(`http://localhost:5555/recipes/${id}`)
+            .get(`https://cookbook-mern.onrender.com/recipes/${id}`)
             .then((res) => {
                 setRecipe(res.data.recipe);
                 setLoading(false);

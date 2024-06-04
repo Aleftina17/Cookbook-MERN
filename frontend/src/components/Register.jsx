@@ -12,7 +12,7 @@ const Register = () => {
         e.preventDefault()
         try {
             await axios
-            .post("http://localhost:5555/auth/register", {
+            .post("https://cookbook-mern.onrender.com/auth/register", {
                 username,
                 password
             })

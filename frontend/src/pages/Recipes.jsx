@@ -19,7 +19,7 @@ const Recipes = () => {
     useEffect(() => {
         setLoading(true);
         axios
-            .get("http://localhost:5555/recipes")
+            .get("https://cookbook-mern.onrender.com/recipes")
             .then((res) => {
                 setRecipes(res.data.data);
                 setLoading(false);
@@ -33,7 +33,7 @@ const Recipes = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5555/recipes/saved-recipes/ids/${userID}`)
+            .get(`https://cookbook-mern.onrender.com/recipes/saved-recipes/ids/${userID}`)
             .then((res) => {
                 setSavedRecipes(res.data.savedRecipes);
             })
@@ -80,7 +80,7 @@ const Recipes = () => {
             return
         }
         try {
-            const response = await axios.put("http://localhost:5555/recipes/save", { recipeID, userID });
+            const response = await axios.put("https://cookbook-mern.onrender.com/recipes/save", { recipeID, userID });
             setSavedRecipes(response.data.savedRecipes);
         } catch (error) {
             console.error("Save Recipe Error: ", error.response.data);
@@ -90,7 +90,7 @@ const Recipes = () => {
 
     const removeSavedRecipe = async (recipeID) => {
         try {
-            const response = await axios.put("http://localhost:5555/recipes/remove", { recipeID, userID });
+            const response = await axios.put("https://cookbook-mern.onrender.com/recipes/remove", { recipeID, userID });
             setSavedRecipes(response.data.savedRecipes);
         } catch (error) {
             console.error("Remove Recipe Error: ", error.response.data);
