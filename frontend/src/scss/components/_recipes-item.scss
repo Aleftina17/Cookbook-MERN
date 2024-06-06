@@ -22,6 +22,11 @@
         height: 20.3rem;
         border-radius: 1rem;
         overflow: hidden;
+        background-color: #c9c9c9;
+        background-image: url(/src/assets/icons/recipe-placeholder.svg);
+        background-size: 8rem 8rem;
+        background-repeat: no-repeat;
+        background-position: center;
 
         img {
             object-fit: cover;
