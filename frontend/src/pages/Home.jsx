@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { popularRecipes } from "../data/popularRecipes";
 import PopularCard from "../components/PopularCard";
@@ -7,23 +7,34 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 const Home = () => {
-    gsap.registerPlugin(useGSAP);
     gsap.registerPlugin(ScrollTrigger);
-    // const container = useRef();
 
     useLayoutEffect(() => {
-        const tl = gsap.timeline({
+        const tlHero = gsap.timeline({
             scrollTrigger: {
                 trigger: ".home_hero .container",
+                start: "top center",
+                end: "bottom center",
             },
         });
-        tl.from(".home_hero .container", {
+
+        const tlPopular = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".home_popular__grid",
+                start: "top bottom",
+                end: "bottom center",
+            },
+        });
+
+        tlHero.fromTo(".home_hero__title", { opacity: 0, x: -100 }, { opacity: 1, x: 0, duration: 1 });
+        tlHero.fromTo(".home_hero__btns .btn", { y: 50, opacity: 0, scale: 0.6 }, { y: 0, scale: 1, opacity: 1, duration: 1.5 }, "-=0.1");
+        tlHero.fromTo(".home_hero__desc", { opacity: 0, x: -100 }, { opacity: 1, x: 0, duration: 1 });
+
+        tlPopular.from(".popular-card", {
             opacity: 0,
-            scale: 0.8,
-            duration: 2,
-        }).to(".home_hero .container", {
-            opacity: 1,
-            scale: 1,
+            duration: 1,
+            y: 200,
+            stagger: 0.5,
         });
     }, []);
 
