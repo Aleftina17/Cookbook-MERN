@@ -14,7 +14,7 @@ const Recipes = () => {
     const [recipesPerPage] = useState(5);
     const userID = useGetUserID();
     const [savedRecipes, setSavedRecipes] = useState([]);
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
         setLoading(true);
@@ -26,7 +26,7 @@ const Recipes = () => {
             })
             .catch((err) => {
                 console.log(err);
-                enqueueSnackbar("Server error.", {variant: 'error'})
+                enqueueSnackbar("Server error.", { variant: "error" });
                 setLoading(false);
             });
     }, []);
@@ -44,6 +44,7 @@ const Recipes = () => {
 
     const handleSearchInputChange = (e) => {
         setSearchQuery(e.target.value);
+        setCurrentPage(1);
     };
 
     const filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -75,16 +76,16 @@ const Recipes = () => {
     };
 
     const saveRecipe = async (recipeID) => {
-        if (!userID){
-            enqueueSnackbar("Log in to save recipes.", {variant: 'error'})
-            return
+        if (!userID) {
+            enqueueSnackbar("Log in to save recipes.", { variant: "error" });
+            return;
         }
         try {
             const response = await axios.put("https://cookbook-mern.onrender.com/recipes/save", { recipeID, userID });
             setSavedRecipes(response.data.savedRecipes);
         } catch (error) {
             console.error("Save Recipe Error: ", error.response.data);
-            enqueueSnackbar("Failed to save the recipe.", {variant: 'error'})
+            enqueueSnackbar("Failed to save the recipe.", { variant: "error" });
         }
     };
 
@@ -94,7 +95,7 @@ const Recipes = () => {
             setSavedRecipes(response.data.savedRecipes);
         } catch (error) {
             console.error("Remove Recipe Error: ", error.response.data);
-            enqueueSnackbar("Failed to remove the recipe from saved.", {variant: 'error'})
+            enqueueSnackbar("Failed to remove the recipe from saved.", { variant: "error" });
         }
     };
 
@@ -129,9 +130,10 @@ const Recipes = () => {
                         </button>
                     </div>
                 </div>
-
                 {loading ? (
                     <Loader />
+                ) : filteredRecipes.length === 0 ? (
+                    <div className="recipes_empty">No recipes found</div>
                 ) : (
                     <div className="recipes_items">
                         {currentRecipes.map((recipe, _) => (

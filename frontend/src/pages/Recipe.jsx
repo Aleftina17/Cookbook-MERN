@@ -79,7 +79,7 @@ const Recipe = () => {
                             <div className="recipe-details_item__row">
                                 <span className="title">Video/recipe URL:</span>
                                 <span>
-                                    <a href={recipe.sourceUrl}>{recipe.sourceUrl}</a>
+                                    <a target="_blank" href={recipe.sourceUrl}>{recipe.sourceUrl}</a>
                                 </span>
                             </div>
                         )}
