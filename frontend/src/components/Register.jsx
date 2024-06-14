@@ -3,7 +3,7 @@ import AuthForm from "./AuthForm";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 
-const Register = () => {
+const Register = ({ switchToLogin }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
@@ -24,6 +24,7 @@ const Register = () => {
                 password,
             });
             enqueueSnackbar("Registration completed. Log into your account.", { variant: "success" });
+            switchToLogin();
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 enqueueSnackbar("User already exists.", { variant: "error" });
