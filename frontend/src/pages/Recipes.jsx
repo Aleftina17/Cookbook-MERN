@@ -40,7 +40,7 @@ const Recipes = () => {
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [userID]);
 
     const handleSearchInputChange = (e) => {
         setSearchQuery(e.target.value);

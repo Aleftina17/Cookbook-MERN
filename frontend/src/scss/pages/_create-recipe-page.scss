@@ -1,76 +1,81 @@
-.create{
+.create {
     background-image: url("./assets/recipes/cookbook-bg.jpg");
     background-repeat: repeat-y;
     background-size: cover;
     padding: 12rem 0;
     min-height: 100vh;
+    background-attachment: fixed;
 
-    .container{
+    .container {
         background-color: #f9f9f9;
         border-radius: 4rem;
         box-shadow: 0 0 1rem 1rem rgba(106, 106, 106, 0.25);
         overflow: hidden;
     }
 
-    &_top{
+    &_top {
         height: 28.7rem;
-        background-image: url('./assets/create/create-top-img.png');
+        background-image: url("./assets/create/create-top-img.png");
         background-size: cover;
         background-repeat: no-repeat;
         padding: 2.7rem 3.7rem;
         margin-bottom: 5rem;
 
-        .btn_back{
+        .btn_back {
             margin-bottom: 4.3rem;
         }
     }
 
-    &_title{
+    &_title {
         font-size: 5rem;
         text-align: center;
         font-weight: 600;
         color: #525252;
     }
 
-    &_form{
+    &_form {
         padding: 0 3.7rem;
         margin-bottom: 4.5rem;
         display: flex;
         flex-direction: column;
         gap: 3.6rem;
 
-        &__item{
+        &__item {
             display: flex;
             flex-direction: column;
             gap: 1.6rem;
             position: relative;
 
-            .title{
+            .title {
                 font-size: 2.4rem;
                 font-weight: 600;
                 color: #474747;
             }
 
-            .required{
+            .required {
                 position: absolute;
                 top: 0;
                 left: -1.4rem;
-                color: #97B04F;
+                color: #97b04f;
             }
 
-            &.error{
-                .input{
+            &.error {
+                .input {
                     border: 0.1rem solid #e46f6f;
                 }
 
-                .desc{
+                .desc {
                     color: #e46f6f;
                 }
 
-                .textarea{
-                    border: 0.1rem solid #e46f6f; 
+                .textarea {
+                    border: 0.1rem solid #e46f6f;
                 }
             }
+        }
+
+        .btn_primary {
+            height: 6.8rem;
         }
     }
 }
