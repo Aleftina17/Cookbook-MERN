@@ -20,7 +20,7 @@ const Login = () => {
           password
         })
 
-        setCookies("access_token", response)
+        setCookies("access_token", response.data.token)
         window.localStorage.setItem("userID", response.data.userID)
         navigate('/recipes')
 
@@ -35,7 +35,7 @@ const Login = () => {
     username={username} 
     setUsername={setUsername} 
     password={password} 
-    setPassword={setPassword} 
+    setPassword={(e) => setPassword(e.target.value)}
     description="Please enter your username and password to log in"
     label='Login'
     onSubmit={onSubmit}
