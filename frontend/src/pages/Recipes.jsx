@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { useGetUserID } from "./../hooks/useGetUserID";
 import { useSnackbar } from "notistack";
+import Filter from "../components/Filter";
+import { checkboxCategoriesOptions } from "../data/categories";
 
 const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
@@ -99,6 +101,10 @@ const Recipes = () => {
         }
     };
 
+    //filter
+    const handleFilterOpen = (e) => {
+    }
+
     return (
         <div className="recipes">
             <div className="container">
@@ -114,9 +120,9 @@ const Recipes = () => {
                                 />
                             </svg>
                         </button>
+                        {/* <Filter checkboxOptions={checkboxCategoriesOptions}/> */}
                     </div>
-                    <div className="recipes_filters-btn">
-                        <button className="btn btn_primary">
+                        <button className="recipes_filters-btn btn btn_primary" onClick={handleFilterOpen}>
                             <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M4.23237 7.08359C3.28694 6.02694 2.81423 5.49861 2.7964 5.0496C2.78091 4.65955 2.94853 4.28465 3.24954 4.03611C3.59605 3.75 4.30498 3.75 5.72285 3.75H24.2765C25.6944 3.75 26.4033 3.75 26.7498 4.03611C27.0508 4.28465 27.2185 4.65955 27.203 5.0496C27.1851 5.49861 26.7124 6.02694 25.767 7.08359L18.6342 15.0555C18.4457 15.2662 18.3515 15.3715 18.2843 15.4913C18.2247 15.5976 18.181 15.7121 18.1545 15.8311C18.1247 15.9652 18.1247 16.1065 18.1247 16.3891V23.073C18.1247 23.3174 18.1247 23.4396 18.0853 23.5453C18.0504 23.6387 17.9938 23.7224 17.92 23.7894C17.8365 23.8653 17.723 23.9107 17.4961 24.0014L13.2461 25.7014C12.7866 25.8852 12.5569 25.9771 12.3725 25.9388C12.2113 25.9053 12.0698 25.8095 11.9787 25.6722C11.8747 25.5152 11.8747 25.2678 11.8747 24.773V16.3891C11.8747 16.1065 11.8747 15.9652 11.8448 15.8311C11.8184 15.7121 11.7746 15.5976 11.715 15.4913C11.6479 15.3715 11.5536 15.2662 11.3652 15.0555L4.23237 7.08359Z"
@@ -128,7 +134,6 @@ const Recipes = () => {
                             </svg>
                             <span>Filters</span>
                         </button>
-                    </div>
                 </div>
                 {loading ? (
                     <Loader />
