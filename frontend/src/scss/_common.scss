@@ -35,7 +35,6 @@ body {
 
     &_primary {
         background-color: #97b04f;
-        position: relative;
         overflow: hidden;
 
         span {
@@ -207,6 +206,26 @@ body {
         border: 0.3rem solid white;
         border-right-color: orange;
         animation: l2 1s infinite linear;
+    }
+
+    &_close {
+        background-color: #97b04f;
+        border-radius: 100%;
+        width: 5.6rem;
+        height: 5.6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity .2s;
+        
+        svg {
+            width: 3.4rem;
+            height: 3.4rem;
+        }
+
+        &:hover, &:focus{
+            opacity: 0.8;
+        }
     }
 }
 

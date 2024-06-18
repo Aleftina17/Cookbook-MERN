@@ -31,7 +31,6 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
     try {
         const recipes = await RecipeModel.find({}).sort({ createdAt: -1 });
-        console.log("Sorted Recipes: ", recipes); 
         return res.status(200).json({
             count: recipes.length,
             data: recipes,
