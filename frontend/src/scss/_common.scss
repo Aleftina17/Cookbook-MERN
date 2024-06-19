@@ -211,16 +211,16 @@ body {
     &_close {
         background-color: #97b04f;
         border-radius: 100%;
-        width: 5.6rem;
-        height: 5.6rem;
+        width: 3.2rem;
+        height: 3.2rem;
         display: flex;
         justify-content: center;
         align-items: center;
         transition: opacity .2s;
         
         svg {
-            width: 3.4rem;
-            height: 3.4rem;
+            width: 2.4rem;
+            height: 2.4rem;
         }
 
         &:hover, &:focus{

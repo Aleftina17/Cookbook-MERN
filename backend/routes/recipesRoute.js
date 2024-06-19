@@ -30,7 +30,15 @@ router.post("/", async (req, res) => {
 //getting all recipes from db
 router.get("/", async (req, res) => {
     try {
-        const recipes = await RecipeModel.find({}).sort({ createdAt: -1 });
+        let filters = {};
+        const { categories, cookingTime } = req.query;
+        if (categories) {
+            filters.categories = { $in: categories.split(",") };
+        }
+        if (cookingTime) {
+            filters.cookingTime = { $in: cookingTime.split(",") };
+        }
+        const recipes = await RecipeModel.find(filters).sort({ createdAt: -1 });
         return res.status(200).json({
             count: recipes.length,
             data: recipes,

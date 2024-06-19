@@ -106,10 +106,27 @@ const Recipes = () => {
         }
     };
 
-    //filter
+    const applyFilters = async (selectedCategories, selectedTime) => {
+        try {
+            const queryParams = new URLSearchParams();
+            if (selectedCategories.length > 0) {
+                queryParams.append("categories", selectedCategories.join(","));
+            }
+            if (selectedTime.length > 0) {
+                queryParams.append("cookingTime", selectedTime.join(","));
+            }
+
+            const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/filter?${queryParams.toString()}`);
+            setRecipes(response.data.data);
+        } catch (error) {
+            console.error("Filter Recipes Error: ", error.message);
+            enqueueSnackbar("Failed to apply filters.", { variant: "error" });
+        }
+    };
+
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (filterRef.current && filterRef.current.contains(e.target)) {
+            if ((filterRef.current && !filterRef.current.contains(e.target)) || (filterBgRef.current && filterBgRef.current.contains(e.target))) {
                 setIsFilterVisible(false);
             }
         };
@@ -117,7 +134,7 @@ const Recipes = () => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [filterRef]);
+    }, []);
 
     const handleFilterOpen = () => {
         setIsFilterVisible(!isFilterVisible);
@@ -153,8 +170,8 @@ const Recipes = () => {
                     </button>
                 </div>
 
-                <div className={`filter-bg ${isFilterVisible ? "open" : ""}`} ref={filterRef}></div>
-                <Filter checkboxOptions={checkboxCategoriesOptions} radioOptions={radioTimeOptions} closeFilter={() => setIsFilterVisible(false)} />
+                <div className={`filter-bg ${isFilterVisible ? "open" : ""}`} ref={filterBgRef}></div>
+                <Filter categoriesOptions={checkboxCategoriesOptions} timeOptions={radioTimeOptions} applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
 
                 {loading ? (
                     <Loader />
