@@ -33,10 +33,11 @@ router.get("/", async (req, res) => {
         let filters = {};
         const { categories, cookingTime } = req.query;
         if (categories) {
-            filters.categories = { $in: categories.split(",") };
+            const categoriesArray = categories.split(",");
+            filters.categories = { $in: categoriesArray };
         }
         if (cookingTime) {
-            filters.cookingTime = { $in: cookingTime.split(",") };
+            filters.cookingTime = cookingTime;
         }
         const recipes = await RecipeModel.find(filters).sort({ createdAt: -1 });
         return res.status(200).json({
@@ -44,8 +45,8 @@ router.get("/", async (req, res) => {
             data: recipes,
         });
     } catch (error) {
-        console.log(error.message);
-        res.status(500).send({ message: error.message });
+        console.error("Error fetching recipes:", error.message);
+        return res.status(500).json({ message: "Server error. Please try again later." });
     }
 });
 
