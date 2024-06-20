@@ -19,9 +19,20 @@ const Filter = ({ categoriesOptions, timeOptions, applyFilters, closeFilter }) =
     };
 
     const applyFiltersHandler = () => {
-        const selectedCategories = Object.keys(checkedCategories).filter((key) => checkedCategories[key]);
-        const selectedTime = Object.keys(checkedTime).filter((key) => checkedTime[key]);
-
+        const selectedCategories = Object.keys(checkedCategories)
+            .filter(key => checkedCategories[key])
+            .map(key => {
+                const option = categoriesOptions.find(option => option.id === key);
+                return option ? option.label : '';
+            });
+    
+        const selectedTime = Object.keys(checkedTime)
+            .filter(key => checkedTime[key])
+            .map(key => {
+                const option = timeOptions.find(option => option.id === key);
+                return option ? option.label : '';
+            });
+    
         applyFilters(selectedCategories, selectedTime);
     };
 

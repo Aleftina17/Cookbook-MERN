@@ -30,23 +30,14 @@ router.post("/", async (req, res) => {
 //getting all recipes from db
 router.get("/", async (req, res) => {
     try {
-        let filters = {};
-        const { categories, cookingTime } = req.query;
-        if (categories) {
-            const categoriesArray = categories.split(",");
-            filters.categories = { $in: categoriesArray };
-        }
-        if (cookingTime) {
-            filters.cookingTime = cookingTime;
-        }
-        const recipes = await RecipeModel.find(filters).sort({ createdAt: -1 });
+        const recipes = await RecipeModel.find({});
         return res.status(200).json({
             count: recipes.length,
             data: recipes,
         });
     } catch (error) {
-        console.error("Error fetching recipes:", error.message);
-        return res.status(500).json({ message: "Server error. Please try again later." });
+        console.log(error.message);
+        res.status(500).send({ message: error.message });
     }
 });
 

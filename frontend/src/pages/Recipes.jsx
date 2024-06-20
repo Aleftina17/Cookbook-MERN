@@ -110,19 +110,24 @@ const Recipes = () => {
         try {
             const queryParams = new URLSearchParams();
             if (selectedCategories.length > 0) {
-                queryParams.append("categories", selectedCategories.join(","));
+                queryParams.append('categories', selectedCategories.join(','));
             }
             if (selectedTime.length > 0) {
-                queryParams.append("cookingTime", selectedTime.join(","));
+                queryParams.append('cookingTime', selectedTime.join(','));
             }
-
+    
+            console.log('Applying filters with data:', {
+                categories: selectedCategories,
+                cookingTime: selectedTime
+            });
+    
             const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/filter?${queryParams.toString()}`);
             setRecipes(response.data.data);
         } catch (error) {
-            console.error("Filter Recipes Error: ", error.message);
-            enqueueSnackbar("Failed to apply filters.", { variant: "error" });
+            console.error('Filter Recipes Error:', error.message);
         }
     };
+    
 
     useEffect(() => {
         const handleClickOutside = (e) => {
