@@ -6,8 +6,6 @@ import Pagination from "../components/Pagination";
 import { useGetUserID } from "./../hooks/useGetUserID";
 import { useSnackbar } from "notistack";
 import Filter from "../components/Filter";
-import { checkboxCategoriesOptions } from "../data/categories";
-import { radioTimeOptions } from "../data/cookingTime";
 
 const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
@@ -17,6 +15,8 @@ const Recipes = () => {
     const [recipesPerPage] = useState(5);
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const [savedRecipes, setSavedRecipes] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedTime, setSelectedTime] = useState([]);
     const userID = useGetUserID();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -54,7 +54,17 @@ const Recipes = () => {
         setCurrentPage(1);
     };
 
-    const filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    const filteredRecipes = recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (selectedCategories.length === 0 || selectedCategories.some((category) => recipe.categories.includes(category))) &&
+        (selectedTime.length === 0 || selectedTime.includes(recipe.cookingTime))
+    );
+
+    const applyFilters = (categories, time) => {
+        setSelectedCategories(categories);
+        setSelectedTime(time);
+        setCurrentPage(1);
+    };
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -106,29 +116,6 @@ const Recipes = () => {
         }
     };
 
-    const applyFilters = async (selectedCategories, selectedTime) => {
-        try {
-            const queryParams = new URLSearchParams();
-            if (selectedCategories.length > 0) {
-                queryParams.append('categories', selectedCategories.join(','));
-            }
-            if (selectedTime.length > 0) {
-                queryParams.append('cookingTime', selectedTime.join(','));
-            }
-    
-            console.log('Applying filters with data:', {
-                categories: selectedCategories,
-                cookingTime: selectedTime
-            });
-    
-            const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/filter?${queryParams.toString()}`);
-            setRecipes(response.data.data);
-        } catch (error) {
-            console.error('Filter Recipes Error:', error.message);
-        }
-    };
-    
-
     useEffect(() => {
         const handleClickOutside = (e) => {
             if ((filterRef.current && !filterRef.current.contains(e.target)) || (filterBgRef.current && filterBgRef.current.contains(e.target))) {
@@ -176,7 +163,7 @@ const Recipes = () => {
                 </div>
 
                 <div className={`filter-bg ${isFilterVisible ? "open" : ""}`} ref={filterBgRef}></div>
-                <Filter categoriesOptions={checkboxCategoriesOptions} timeOptions={radioTimeOptions} applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
+                <Filter recipes={recipes} selectedCategories={selectedCategories} selectedTime={selectedTime} applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
 
                 {loading ? (
                     <Loader />
