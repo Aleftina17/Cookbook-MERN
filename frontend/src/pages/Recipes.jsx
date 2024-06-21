@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
-import Pagination from "../components/Pagination";
-import { useGetUserID } from "./../hooks/useGetUserID";
 import { useSnackbar } from "notistack";
+import Loader from "../components/Loader";
+import Pagination from "../components/Pagination";
 import Filter from "../components/Filter";
+import { useGetUserID } from "./../hooks/useGetUserID";
+import useFetch from "../hooks/useFetch";
 
 const Recipes = () => {
-    const [recipes, setRecipes] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const userID = useGetUserID();
+    const { data: recipes, loading, error } = useFetch("https://cookbook-mern.onrender.com/recipes", []);
+    const { enqueueSnackbar } = useSnackbar();
+
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(5);
@@ -17,26 +20,9 @@ const Recipes = () => {
     const [savedRecipes, setSavedRecipes] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
-    const userID = useGetUserID();
-    const { enqueueSnackbar } = useSnackbar();
 
     const filterRef = useRef();
     const filterBgRef = useRef();
-
-    useEffect(() => {
-        setLoading(true);
-        axios
-            .get("https://cookbook-mern.onrender.com/recipes")
-            .then((res) => {
-                setRecipes(res.data.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                enqueueSnackbar("Server error.", { variant: "error" });
-                setLoading(false);
-            });
-    }, []);
 
     useEffect(() => {
         axios
@@ -49,16 +35,23 @@ const Recipes = () => {
             });
     }, [userID]);
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if ((filterRef.current && !filterRef.current.contains(e.target)) || (filterBgRef.current && filterBgRef.current.contains(e.target))) {
+                setIsFilterVisible(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    //Search and filter
     const handleSearchInputChange = (e) => {
         setSearchQuery(e.target.value);
         setCurrentPage(1);
     };
-
-    const filteredRecipes = recipes.filter((recipe) =>
-        recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (selectedCategories.length === 0 || selectedCategories.some((category) => recipe.categories.includes(category))) &&
-        (selectedTime.length === 0 || selectedTime.includes(recipe.cookingTime))
-    );
 
     const applyFilters = (categories, time) => {
         setSelectedCategories(categories);
@@ -66,6 +59,18 @@ const Recipes = () => {
         setCurrentPage(1);
     };
 
+    const filteredRecipes = recipes.filter((recipe) => {
+        const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategories.length === 0 || selectedCategories.some((category) => recipe.categories.includes(category));
+        const matchesTime = selectedTime.length === 0 || selectedTime.includes(recipe.cookingTime);
+        return matchesSearch && matchesCategory && matchesTime;
+    });
+
+    const handleFilterOpen = () => {
+        setIsFilterVisible(!isFilterVisible);
+    };
+
+    //Pagination
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -116,22 +121,6 @@ const Recipes = () => {
         }
     };
 
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if ((filterRef.current && !filterRef.current.contains(e.target)) || (filterBgRef.current && filterBgRef.current.contains(e.target))) {
-                setIsFilterVisible(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    const handleFilterOpen = () => {
-        setIsFilterVisible(!isFilterVisible);
-    };
-
     return (
         <div className="recipes">
             <div className="container">
@@ -163,7 +152,7 @@ const Recipes = () => {
                 </div>
 
                 <div className={`filter-bg ${isFilterVisible ? "open" : ""}`} ref={filterBgRef}></div>
-                <Filter recipes={recipes} selectedCategories={selectedCategories} selectedTime={selectedTime} applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
+                <Filter recipes={recipes} applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
 
                 {loading ? (
                     <Loader />

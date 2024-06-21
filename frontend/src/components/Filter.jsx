@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-const Filter = ({ recipes, applyFilters, selectedCategories, selectedTime, closeFilter }) => {
+const Filter = ({ recipes, applyFilters, closeFilter }) => {
     const [categories, setCategories] = useState([]);
     const [cookingTimes, setCookingTimes] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedTime, setSelectedTime] = useState([]);
 
     useEffect(() => {
         const allCategories = recipes.reduce((acc, recipe) => {
@@ -24,31 +26,23 @@ const Filter = ({ recipes, applyFilters, selectedCategories, selectedTime, close
         setCookingTimes(allCookingTimes.sort());
     }, [recipes]);
 
-    const handleCategoryChange = (e) => {
-        const category = e.target.value;
-        if (selectedCategories.includes(category)) {
-            applyFilters(
-                selectedCategories.filter((c) => c !== category),
-                selectedTime
-            );
-        } else {
-            applyFilters([...selectedCategories, category], selectedTime);
-        }
+    const handleCategoryChange = (category) => {
+        const updatedCategories = selectedCategories.includes(category) ? selectedCategories.filter((c) => c !== category) : [...selectedCategories, category];
+
+        setSelectedCategories(updatedCategories);
+        applyFilters(updatedCategories, selectedTime);
     };
 
-    const handleTimeChange = (e) => {
-        const time = e.target.value;
-        if (selectedTime.includes(time)) {
-            applyFilters(
-                selectedCategories,
-                selectedTime.filter((t) => t !== time)
-            );
-        } else {
-            applyFilters(selectedCategories, [...selectedTime, time]);
-        }
+    const handleTimeChange = (time) => {
+        const updatedTime = selectedTime.includes(time) ? selectedTime.filter((t) => t !== time) : [...selectedTime, time];
+
+        setSelectedTime(updatedTime);
+        applyFilters(selectedCategories, updatedTime);
     };
 
     const handleClearFilters = () => {
+        setSelectedCategories([]);
+        setSelectedTime([]);
         applyFilters([], []);
     };
 
@@ -66,7 +60,14 @@ const Filter = ({ recipes, applyFilters, selectedCategories, selectedTime, close
                         <div className="filter_item__list">
                             {categories.map((category) => (
                                 <label key={category}>
-                                    <input type="checkbox" className="input-checkbox" id={category} value={category} checked={selectedCategories.includes(category)} onChange={handleCategoryChange} />
+                                    <input
+                                        type="checkbox"
+                                        className="input-checkbox"
+                                        id={category}
+                                        value={category}
+                                        checked={selectedCategories.includes(category)}
+                                        onChange={() => handleCategoryChange(category)}
+                                    />
                                     <span>{category}</span>
                                 </label>
                             ))}
@@ -78,7 +79,7 @@ const Filter = ({ recipes, applyFilters, selectedCategories, selectedTime, close
                         <div className="filter_item__list">
                             {cookingTimes.map((time) => (
                                 <label key={time}>
-                                    <input type="checkbox" className="input-checkbox" id={time} value={time} checked={selectedTime.includes(time)} onChange={handleTimeChange} />
+                                    <input type="checkbox" className="input-checkbox" id={time} value={time} checked={selectedTime.includes(time)} onChange={() => handleTimeChange(time)} />
                                     <span>{time}</span>
                                 </label>
                             ))}
