@@ -4,12 +4,14 @@ import { useParams } from "react-router-dom";
 import BackButton from "./../components/BackButton";
 import Loader from "../components/Loader";
 import NotFound from "../components/NotFound";
+import useRecipeActions from "../hooks/useRecipeActions";
 
 const Recipe = () => {
     const { id } = useParams();
     const [recipe, setRecipe] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -42,10 +44,39 @@ const Recipe = () => {
         return <NotFound />;
     }
 
+    // Save or remove recipe
+    const toggleSaveRecipe = async (e, recipeID) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            if (isRecipeSaved(recipeID)) {
+                await removeSavedRecipe(recipeID);
+            } else {
+                await saveRecipe(recipeID);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className="recipe-details">
             <div className="container">
-                <BackButton />
+                <div className="recipe-details_top">
+                    <BackButton />
+                    <button onClick={(e) => toggleSaveRecipe(e, recipe._id)} className={`btn btn_like ${isRecipeSaved(recipe._id) ? "liked" : ""}`}>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                fillRule="evenodd"
+                                stroke="#97b04f"
+                                clipRule="evenodd"
+                                d="M8.96173 19.4687C6.01943 17.2137 2 13.4886 2 9.96653C2 4.08262 7.50016 1.88586 12 6.43111C16.4998 1.88586 22 4.08262 22 9.9665C22 13.4887 17.9806 17.2137 15.0383 19.4687C13.7063 20.4896 13.0403 21 12 21C10.9597 21 10.2937 20.4896 8.96173 19.4687Z"
+                                fill="none"
+                            />
+                        </svg>
+                    </button>
+                </div>
+
                 <div className="recipe-details_item">
                     <div className="recipe-details_item__title">{recipe.title}</div>
                     <div className="recipe-details_item__img">
@@ -79,7 +110,9 @@ const Recipe = () => {
                             <div className="recipe-details_item__row">
                                 <span className="title">Video/recipe URL:</span>
                                 <span>
-                                    <a target="_blank" href={recipe.sourceUrl}>{recipe.sourceUrl}</a>
+                                    <a target="_blank" href={recipe.sourceUrl}>
+                                        {recipe.sourceUrl}
+                                    </a>
                                 </span>
                             </div>
                         )}
