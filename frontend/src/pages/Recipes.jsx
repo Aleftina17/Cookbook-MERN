@@ -1,39 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import { useSnackbar } from "notistack";
 import Loader from "../components/Loader";
 import Pagination from "../components/Pagination";
 import Filter from "../components/Filter";
-import { useGetUserID } from "./../hooks/useGetUserID";
 import useFetch from "../hooks/useFetch";
+import useRecipeActions from "../hooks/useRecipeActions";
 
 const Recipes = () => {
-    const userID = useGetUserID();
     const { data: recipes, loading, error } = useFetch("https://cookbook-mern.onrender.com/recipes", []);
-    const { enqueueSnackbar } = useSnackbar();
+    const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
 
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(5);
     const [isFilterVisible, setIsFilterVisible] = useState(false);
-    const [savedRecipes, setSavedRecipes] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
 
     const filterRef = useRef();
     const filterBgRef = useRef();
-
-    useEffect(() => {
-        axios
-            .get(`https://cookbook-mern.onrender.com/recipes/saved-recipes/ids/${userID}`)
-            .then((res) => {
-                setSavedRecipes(res.data.savedRecipes);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, [userID]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -81,8 +66,6 @@ const Recipes = () => {
     const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
 
     // Save or remove recipe
-    const isRecipeSaved = (id) => savedRecipes.includes(id);
-
     const toggleSaveRecipe = async (e, recipeID) => {
         e.preventDefault();
         e.stopPropagation();
@@ -94,30 +77,6 @@ const Recipes = () => {
             }
         } catch (error) {
             console.log(error);
-        }
-    };
-
-    const saveRecipe = async (recipeID) => {
-        if (!userID) {
-            enqueueSnackbar("Log in to save recipes.", { variant: "error" });
-            return;
-        }
-        try {
-            const response = await axios.put("https://cookbook-mern.onrender.com/recipes/save", { recipeID, userID });
-            setSavedRecipes(response.data.savedRecipes);
-        } catch (error) {
-            console.error("Save Recipe Error: ", error.response.data);
-            enqueueSnackbar("Failed to save the recipe.", { variant: "error" });
-        }
-    };
-
-    const removeSavedRecipe = async (recipeID) => {
-        try {
-            const response = await axios.put("https://cookbook-mern.onrender.com/recipes/remove", { recipeID, userID });
-            setSavedRecipes(response.data.savedRecipes);
-        } catch (error) {
-            console.error("Remove Recipe Error: ", error.response.data);
-            enqueueSnackbar("Failed to remove the recipe from saved.", { variant: "error" });
         }
     };
 
