@@ -4,6 +4,17 @@
 This is a full-stack MERN web application where users can browse, search, create and save recipes. Built with React, it provides a user-friendly interface to explore various recipes and manage a list of favorite recipes.
 
 
+## Tech Stack
+
+**Frontend:** React, React Router, React Cookie, Axios, SCSS, Notistack, GSAP 
+
+**Backend:** Node.js, Express.js, JWT, Bcrypt, Mongoose, CORS
+
+**Dev Tools:** Vite, Nodemon, 
+
+**Data Base:** Mongo DB
+
+
 ## Features
 
 - Browse a variety of recipes with images, ingredients, cooking steps, etc.
