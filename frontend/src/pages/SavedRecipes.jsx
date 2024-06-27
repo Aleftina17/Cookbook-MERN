@@ -4,8 +4,10 @@ import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { useGetUserID } from "./../hooks/useGetUserID";
+import useRecipeActions from "../hooks/useRecipeActions";
 
 const SavedRecipes = () => {
+    const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
     const [savedRecipes, setSavedRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -36,8 +38,6 @@ const SavedRecipes = () => {
         fetchSavedRecipes();
     }, [userID]);
 
-    const isRecipeSaved = (id) => savedRecipes.some((recipe) => recipe._id === id);
-
     const toggleSaveRecipe = async (e, recipeID) => {
         e.preventDefault();
         e.stopPropagation();
@@ -49,24 +49,6 @@ const SavedRecipes = () => {
             }
         } catch (error) {
             console.error(error);
-        }
-    };
-
-    const saveRecipe = async (recipeID) => {
-        try {
-            const response = await axios.put("https://cookbook-mern.onrender.com/recipes/save", { recipeID, userID });
-            setSavedRecipes(response.data.savedRecipes);
-        } catch (error) {
-            console.error("Save Recipe Error: ", error.response.data);
-        }
-    };
-
-    const removeSavedRecipe = async (recipeID) => {
-        try {
-            const response = await axios.put("https://cookbook-mern.onrender.com/recipes/remove", { recipeID, userID });
-            setSavedRecipes((prevSavedRecipes) => prevSavedRecipes.filter((recipe) => recipe._id !== recipeID));
-        } catch (error) {
-            console.error("Remove Recipe Error: ", error.response.data);
         }
     };
 
