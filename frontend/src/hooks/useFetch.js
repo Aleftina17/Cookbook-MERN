@@ -15,7 +15,11 @@ const useFetch = (url, initialState) => {
             .get(url)
             .then((res) => {
                 if (isMounted) {
-                    setData(res.data.data) || res.data;
+                    if (!res.data.data) {
+                        setData(res.data);
+                    } else {
+                        setData(res.data.data);
+                    }
                     setLoading(false);
                 }
             })

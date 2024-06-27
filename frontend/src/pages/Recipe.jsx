@@ -1,33 +1,15 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { useParams } from "react-router-dom";
 import BackButton from "./../components/BackButton";
 import Loader from "../components/Loader";
 import NotFound from "../components/NotFound";
 import useRecipeActions from "../hooks/useRecipeActions";
+import useFetch from "../hooks/useFetch";
 
 const Recipe = () => {
     const { id } = useParams();
-    const [recipe, setRecipe] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
-
-    useEffect(() => {
-        const fetchRecipe = async () => {
-            try {
-                const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/${id}`);
-                setRecipe(response.data.recipe);
-            } catch (err) {
-                console.error(err);
-                setError(true);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchRecipe();
-    }, [id]);
+    const { data: response, loading, error } = useFetch(`https://cookbook-mern.onrender.com/recipes/${id}`, null);
 
     if (loading) {
         return (
@@ -40,11 +22,12 @@ const Recipe = () => {
         );
     }
 
-    if (error || !recipe) {
+    if (error || !response || !response.recipe) {
         return <NotFound />;
     }
 
-    // Save or remove recipe
+    const recipe = response.recipe;
+
     const toggleSaveRecipe = async (e, recipeID) => {
         e.preventDefault();
         e.stopPropagation();
