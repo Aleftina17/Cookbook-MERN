@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import CheckboxList from "../components/CheckboxList";
 import { checkboxCategoriesOptions } from "../data/categories";
 
