@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import BackButton from "../components/BackButton";
-import CheckboxList from "../components/CheckboxList";
 import Loader from "../components/Loader";
-import RadioList from "../components/RadioList";
 import axios from "axios";
 import { useGetUserID } from "./../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { checkboxCategoriesOptions } from "../data/categories";
 import { radioTimeOptions } from "../data/cookingTime";
+import CategorySelector from "../components/CategorySelector";
+import CookingTimeSelector from '../components/CookingTimeSelector'
 
 export const CreateRecipe = () => {
     const [loading, setLoading] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState({});
     const [selectedCategories, setSelectedCategories] = useState([1, 2]);
     const [selectedTime, setSelectedTime] = useState(2);
     const [formErrors, setFormErrors] = useState({});
@@ -20,17 +19,18 @@ export const CreateRecipe = () => {
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
 
-    const toggleDropdown = (dropdownId) => {
-        setDropdownOpen((prevOpen) => {
-            const updatedOpen = { ...prevOpen };
-            Object.keys(prevOpen).forEach((id) => {
-                if (id !== dropdownId) {
-                    updatedOpen[id] = false;
-                }
-            });
-            updatedOpen[dropdownId] = !prevOpen[dropdownId];
-            return updatedOpen;
-        });
+    const [dropdownStates, setDropdownStates] = useState({
+        categories: false,
+        cookingTime: false,
+    });
+
+    const toggleDropdown = (dropdown) => {
+        setDropdownStates((prevState) => ({
+            ...Object.keys(prevState).reduce((acc, key) => {
+                acc[key] = key === dropdown ? !prevState[key] : false;
+                return acc;
+            }, {})
+        }));
     };
 
     const handleCategoryChange = (categories) => {
@@ -53,13 +53,6 @@ export const CreateRecipe = () => {
         }));
     };
 
-    const getSelectedCategoryLabels = () => {
-        return selectedCategories
-            .map((categoryId) => checkboxCategoriesOptions.find((option) => option.id === categoryId)?.label)
-            .filter((label) => label)
-            .join(", ");
-    };
-
     const handleTimeChange = (id) => {
         const selectedOption = radioTimeOptions.find((option) => option.id === id);
         setSelectedTime(id);
@@ -67,11 +60,6 @@ export const CreateRecipe = () => {
             ...prevRecipe,
             cookingTime: selectedOption ? selectedOption.label : "",
         }));
-    };
-
-    const getSelectedTimeLabel = () => {
-        const selectedOption = radioTimeOptions.find((option) => option.id === selectedTime);
-        return selectedOption ? selectedOption.label : "Select time";
     };
 
     //creating recipe
@@ -252,41 +240,19 @@ export const CreateRecipe = () => {
                         </div>
                     </div>
                     {/* categories */}
-                    <div className={`create_form__item ${formErrors.categories ? "error" : ""}`}>
-                        <div className="title">
-                            <b className="required">*</b>
-                            <span>Choose categories</span>
-                        </div>
-                        <div className={`dropdown ${dropdownOpen["categories"] ? "open" : ""}`}>
-                            <div className="dropdown_top input" onClick={() => toggleDropdown("categories")}>
-                                <input readOnly id="categoriesInput" name="categories" type="text" value={getSelectedCategoryLabels()} placeholder="Select at least one category" />
-                                <svg viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.5 12.087L15 19.9131L22.5 12.087" stroke="#474747" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </div>
-                            <div className="dropdown_content">
-                                <CheckboxList checkboxOptions={checkboxCategoriesOptions} onChange={handleCategoryChange} />
-                            </div>
-                        </div>
-                    </div>
+                    <CategorySelector 
+                        selectedCategories={selectedCategories} 
+                        onCategoryChange={handleCategoryChange} 
+                        isOpen={dropdownStates.categories}
+                        toggleDropdown={() => toggleDropdown('categories')}
+                    />
                     {/* cooking time */}
-                    <div className={`create_form__item ${formErrors.cookingTime ? "error" : ""}`}>
-                        <div className="title">
-                            <b className="required">*</b>
-                            <span>Choose time</span>
-                        </div>
-                        <div className={`dropdown ${dropdownOpen["time"] ? "open" : ""}`}>
-                            <div className="dropdown_top input" onClick={() => toggleDropdown("time")}>
-                                <input id="timeInput" name="cookingTime" readOnly type="text" value={getSelectedTimeLabel()} />
-                                <svg viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.5 12.087L15 19.9131L22.5 12.087" stroke="#474747" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </div>
-                            <div className="dropdown_content">
-                                <RadioList radioOptions={radioTimeOptions} onChange={handleTimeChange} />
-                            </div>
-                        </div>
-                    </div>
+                    <CookingTimeSelector 
+                        selectedTime={selectedTime}
+                        onTimeChange={handleTimeChange}
+                        isOpen={dropdownStates.cookingTime}
+                        toggleDropdown={() => toggleDropdown('cookingTime')}
+                    />
                     {/* ingredients */}
                     <div className={`create_form__item ${formErrors.ingredients ? "error" : ""}`}>
                         <div className="title">
