@@ -1,4 +1,3 @@
-// IngredientsField.js
 import React from 'react';
 
 const IngredientsField = ({ ingredients, handleIngredientChange, removeIngredient, addIngredient, hasError }) => {

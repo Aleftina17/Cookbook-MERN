@@ -11,6 +11,7 @@ import CategorySelector from "../components/CategorySelector";
 import CookingTimeSelector from '../components/CookingTimeSelector'
 import IngredientsField from "../components/IngredientsField";
 import CookingStepsField from "../components/CookingStepsField";
+import TextInput from "../components/TextField";
 
 export const CreateRecipe = () => {
     const [loading, setLoading] = useState(false);
@@ -230,31 +231,27 @@ export const CreateRecipe = () => {
                     <div className="create_title">Add Your Recipe</div>
                 </div>
                 <form onSubmit={handleSubmit} className="create_form">
-                    {/* title */}
-                    <div className={`create_form__item ${formErrors.title ? "error" : ""}`}>
-                        <div className="title">
-                            <b className="required">*</b>
-                            <span>Title</span>
-                        </div>
-                        <div className="input">
-                            <input id="titleInput" name="title" type="text" placeholder="Enter recipe title" onChange={handleChange} />
-                        </div>
-                    </div>
-                    {/* categories */}
+                    <TextInput
+                        id="titleInput"
+                        name="title"
+                        type="text"
+                        placeholder="Enter recipe title"
+                        value={recipe.title}
+                        onChange={handleChange}
+                        error={formErrors.title}
+                    />
                     <CategorySelector 
                         selectedCategories={selectedCategories} 
                         onCategoryChange={handleCategoryChange} 
                         isOpen={dropdownStates.categories}
                         toggleDropdown={() => toggleDropdown('categories')}
                     />
-                    {/* cooking time */}
                     <CookingTimeSelector 
                         selectedTime={selectedTime}
                         onTimeChange={handleTimeChange}
                         isOpen={dropdownStates.cookingTime}
                         toggleDropdown={() => toggleDropdown('cookingTime')}
                     />
-                    {/* ingredients */}
                     <IngredientsField
                         ingredients={recipe.ingredients}
                         handleIngredientChange={handleIngredientChange}
@@ -262,7 +259,6 @@ export const CreateRecipe = () => {
                         addIngredient={addIngredient}
                         hasError={formErrors.ingredients}
                     />
-                    {/* steps */}
                     <CookingStepsField 
                         cookingSteps={recipe.cookingSteps}
                         handleStepChange={handleStepChange}
@@ -270,25 +266,23 @@ export const CreateRecipe = () => {
                         addStep={addStep}
                         hasError={formErrors.cookingSteps}
                     />
-                    {/* image url */}
-                    <div className={`create_form__item ${formErrors.imageUrl ? "error" : ""}`}>
-                        <div className="title">
-                            <b className="required">*</b>
-                            <span>Image URL</span>
-                        </div>
-                        <div className="input">
-                            <input id="imageInput" name="imageUrl" type="text" placeholder="Provide image URL" onChange={handleChange} />
-                        </div>
-                    </div>
-                    {/* source url */}
-                    <div className="create_form__item">
-                        <div className="title">
-                            <span>Video/recipe URL</span>
-                        </div>
-                        <div className="input">
-                            <input id="sourceInput" name="sourceUrl" type="text" placeholder="Provide video or recipe URL" onChange={handleChange} />
-                        </div>
-                    </div>
+                    <TextInput
+                        id="imageInput"
+                        name="imageUrl"
+                        type="text"
+                        placeholder="Provide image URL"
+                        value={recipe.imageUrl}
+                        onChange={handleChange}
+                        error={formErrors.imageUrl}
+                    />
+                    <TextInput
+                        id="sourceInput"
+                        name="sourceUrl"
+                        type="text"
+                        placeholder="Provide video or recipe URL"
+                        value={recipe.sourceUrl}
+                        onChange={handleChange}
+                    />
                     <button className="btn btn_primary" type="submit">
                         {loading ? <Loader /> : <span>Create recipe</span>}
                     </button>
