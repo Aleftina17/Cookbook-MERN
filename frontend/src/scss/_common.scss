@@ -334,6 +334,7 @@ a {
         gap: 1.2rem;
         max-height: 40rem;
         overflow: auto;
+        overscroll-behavior: contain;
         padding: 2.4rem 1rem 2.4rem 0rem;
 
         &::-webkit-scrollbar {
@@ -342,6 +343,7 @@ a {
 
         &::-webkit-scrollbar-thumb {
             background: #b1b1b1;
+            border-radius: 1rem;
         }
 
         label {

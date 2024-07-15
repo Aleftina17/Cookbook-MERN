@@ -1,62 +1,155 @@
 .home {
-    background-color: #f9f9f9;
-    margin-bottom: 17rem;
+    background: #4c5926;
+    overflow-y: clip;
+    padding-bottom: 17rem;
 
     &_hero {
-        background-image: url("./assets/home/hero-bg.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        height: 107rem;
-        margin-bottom: 12.7rem;
+        height: 108rem;
+        background: rgb(151, 176, 79);
+        background: linear-gradient(180deg, rgba(151, 176, 79, 1) 0%, rgba(76, 89, 38, 1) 100%);
+        color: #fff;
+        position: relative;
 
         .container {
-            display: flex;
-            flex-direction: column;
-            padding-top: 30.5rem;
-            align-items: center;
             height: 100%;
-            will-change: transform;
+            display: flex;
+            padding-bottom: 4rem;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5.5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            left: -24rem;
         }
 
-        &__title{
-            font-size: 14rem;
-            line-height: 100%;
-            color: #474747;
-            margin-bottom: 4rem;
-            width: 100rem;
-            text-align: center;
-            font-family: "Leckerli One", cursive;
+        &__title {
+            font-family: "Montserrat", sans-serif;
+            font-size: 26rem;
+            font-weight: 700;
+            text-shadow: 2.5rem 0 3.5rem rgba(0, 0, 0, 0.25);
+            display: flex;
+
+            .letter {
+                margin-left: -4.5rem;
+                will-change: transform;
+                position: relative;
+            }
         }
 
-        &__desc{
-            margin-bottom: 5rem;
+        &__desc {
             font-size: 3rem;
             line-height: 4rem;
-            color: #525252;
+            font-weight: 400;
             width: 71rem;
             text-align: center;
         }
 
-        &__btns{
+        &__btns {
             display: flex;
-            gap: 1.6rem;
+            gap: 2rem;
+
+            .btn {
+                transition: scale 0.2s;
+
+                &:hover {
+                    scale: 1.03;
+                }
+
+                &_primary {
+                    background-color: #fff;
+
+                    span {
+                        color: #4c5926;
+                    }
+                }
+
+                &_secondary {
+                    border: 0.2rem solid #fff;
+
+                    &:hover {
+                        span {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+
+        &__img {
+            position: absolute;
+            z-index: 0;
+            top: 2rem;
+            right: 4rem;
+            width: auto;
+            height: 104rem;
+            pointer-events: none;
+            will-change: transform;
+
+            &--2 {
+                position: absolute;
+                z-index: 0;
+                top: 30rem;
+                left: -1rem;
+                width: auto;
+                height: 80rem;
+                pointer-events: none;
+                z-index: 0;
+                will-change: transform;
+            }
         }
     }
 
     &_popular {
+        position: relative;
+        padding-top: 2rem;
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
         &__title {
-            text-align: center;
-            margin-bottom: 6.6rem;
-            font-size: 6.4rem;
+            text-align: right;
+            margin-bottom: 10rem;
+            font-size: 6rem;
             line-height: 100%;
-            font-weight: 500;
-            color: #2c2f24;
+            color: #fff;
+            font-family: "Montserrat", sans-serif;
+            font-size: 6rem;
+            font-weight: 700;
+            text-shadow: 2.5rem 0 3.5rem rgba(0, 0, 0, 0.25);
+            letter-spacing: -0.1rem;
         }
 
         &__grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 4rem;
+        }
+
+        &__img {
+            position: absolute;
+            top: 10rem;
+            left: -20rem;
+            width: auto;
+            height: 92.3rem;
+            pointer-events: none;
+            z-index: 10;
+            will-change: transform;
+
+            &--2 {
+                position: absolute;
+                z-index: 0;
+                top: 30rem;
+                right: 0rem;
+                width: auto;
+                height: 80rem;
+                pointer-events: none;
+                z-index: 0;
+                transform: scaleY(-1);
+                will-change: transform;
+            }
         }
     }
 }
