@@ -9,6 +9,19 @@ body {
     @media (max-width: 48em) {
         font-size: 3rem;
     }
+
+    &::-webkit-scrollbar {
+        width: 1rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #97b04f;
+        border-radius: 0.4rem;
+    }
 }
 
 //btns
@@ -216,14 +229,15 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: opacity .2s;
-        
+        transition: opacity 0.2s;
+
         svg {
             width: 2.4rem;
             height: 2.4rem;
         }
 
-        &:hover, &:focus{
+        &:hover,
+        &:focus {
             opacity: 0.8;
         }
     }
