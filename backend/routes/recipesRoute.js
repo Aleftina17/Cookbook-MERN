@@ -68,6 +68,29 @@ router.get("/search", async (req, res) => {
     }
 });
 
+//filter fecipes
+router.get('/filter', async (req, res) => {
+    try {
+        const { categories, cookingTimes, page = 1, limit = 5 } = req.query;
+        const filter = {};
+        if (categories) {
+            filter.categories = { $in: categories.split(",") };
+        }
+        if (cookingTimes) {
+            filter.cookingTime = { $in: cookingTimes.split(",") };
+        }
+        const skip = (page - 1) * limit;
+        const recipes = await RecipeModel.find(filter).skip(skip).limit(Number(limit));
+        const count = await RecipeModel.countDocuments(filter);
+        const totalPages = Math.ceil(count / limit);
+        res.json({ data: recipes, count, totalPages });
+        
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send({ message: error.message });
+    }
+})
+
 //get one recipe by id
 router.get("/:id", async (req, res) => {
     try {
