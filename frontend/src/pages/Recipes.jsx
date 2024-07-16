@@ -10,19 +10,27 @@ import axios from "axios";
 const Recipes = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(5);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [isFilterVisible, setIsFilterVisible] = useState(false);
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedTime, setSelectedTime] = useState([]);
+
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [count, setCount] = useState(0);
+
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
+
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedTime, setSelectedTime] = useState([]);
+
     const [totalPages, setTotalPages] = useState(0);
     const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
 
     const filterRef = useRef();
     const filterBgRef = useRef();
+
+    useEffect(() => {
+        fetchRecipes(currentPage, recipesPerPage);
+    }, [currentPage, recipesPerPage]);
 
     const fetchRecipes = async (page, limit) => {
         try {
@@ -84,7 +92,28 @@ const Recipes = () => {
     const applyFilters = (categories, time) => {
         setSelectedCategories(categories);
         setSelectedTime(time);
-        setCurrentPage(1);
+        fetchFilteredRecipes(categories, time);
+    };
+
+    const fetchFilteredRecipes = async (categories, time) => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/filter`, {
+                params: {
+                    categories: categories.join(","),
+                    cookingTimes: time.join(","),
+                    page: currentPage,
+                    limit: recipesPerPage,
+                },
+            });
+            setRecipes(response.data.data);
+            setCount(response.data.count);
+            setTotalPages(response.data.totalPages);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
     };
 
     const handleFilterOpen = () => {
@@ -136,7 +165,7 @@ const Recipes = () => {
                 </div>
 
                 <div className={`filter-bg ${isFilterVisible ? "open" : ""}`} ref={filterBgRef}></div>
-                <Filter recipes={recipes} applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
+                <Filter applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
 
                 {loading ? (
                     <Loader />

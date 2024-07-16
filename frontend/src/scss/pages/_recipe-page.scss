@@ -12,6 +12,9 @@
         box-shadow: 0 0 1rem 1rem rgba(106, 106, 106, 0.25);
         padding: 3rem 8rem 11rem;
         position: relative;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
 
         &::before {
             content: "";
@@ -60,7 +63,7 @@
             font-size: 2.4rem;
             display: flex;
             flex-direction: column;
-            gap: 1.6rem;
+            gap: 2rem;
 
             .title {
                 font-size: 2.8rem;
@@ -76,7 +79,7 @@
 
             a {
                 text-decoration: underline;
-                max-width: 50rem;
+                max-width: 44rem;
                 display: block;
                 overflow: hidden;
                 text-overflow: ellipsis;

@@ -30,8 +30,9 @@
     background-color: #F9F9F9;
     border-radius: 4rem;
     padding: 6.4rem 3.2rem 3.2rem;
-
-
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
     z-index: -1;
     transform: translateY(-4rem);
     opacity: 0;
