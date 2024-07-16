@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import Loader from "../components/Loader";
 import Pagination from "../components/Pagination";
 import Filter from "../components/Filter";
-import useFetch from "../hooks/useFetch";
 import useRecipeActions from "../hooks/useRecipeActions";
-import axios from "axios";
 
 const Recipes = () => {
+    const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(5);
 
@@ -15,15 +15,12 @@ const Recipes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [count, setCount] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     const [searchQuery, setSearchQuery] = useState("");
     const [isFilterVisible, setIsFilterVisible] = useState(false);
-
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
-
-    const [totalPages, setTotalPages] = useState(0);
-    const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
 
     const filterRef = useRef();
     const filterBgRef = useRef();
@@ -41,9 +38,9 @@ const Recipes = () => {
             setRecipes(response.data.data);
             setCount(response.data.count);
             setTotalPages(response.data.totalPages);
-            setLoading(false);
         } catch (error) {
             setError(error);
+        } finally {
             setLoading(false);
         }
     };
@@ -57,16 +54,12 @@ const Recipes = () => {
             setRecipes(response.data.data);
             setCount(response.data.count);
             setTotalPages(response.data.totalPages);
-            setLoading(false);
         } catch (error) {
             setError(error);
+        } finally {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchRecipes(currentPage, recipesPerPage);
-    }, [currentPage, recipesPerPage]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -109,9 +102,9 @@ const Recipes = () => {
             setRecipes(response.data.data);
             setCount(response.data.count);
             setTotalPages(response.data.totalPages);
-            setLoading(false);
         } catch (error) {
             setError(error);
+        } finally {
             setLoading(false);
         }
     };

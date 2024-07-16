@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 
-const useFetch = (url, initialState, page, limit) => {
+const useFetch = (initialUrl, initialState, page, limit) => {
     const [data, setData] = useState(initialState);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -16,7 +16,7 @@ const useFetch = (url, initialState, page, limit) => {
             setError(null);
 
             try {
-                const response = await axios.get(url, {
+                const response = await axios.get(initialUrl, {
                     params: {
                         page,
                         limit,
@@ -34,7 +34,7 @@ const useFetch = (url, initialState, page, limit) => {
         };
 
         fetchData();
-    }, [url, page, limit, enqueueSnackbar]);
+    }, [initialUrl, page, limit, enqueueSnackbar]);
 
     return { data, loading, error, count, totalPages };
 };
