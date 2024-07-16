@@ -22,7 +22,7 @@ export const popularRecipes = [
     },
     {
         title: "Burgers",
-        description: "A perfect blend of juicy meat, fresh vegetables, and savory sauces nestled between soft, toasted buns",
+        description: "A blend of juicy meat, fresh vegetables, and savory sauces nestled between toasted buns",
         link: "https://cookbook-mern.netlify.app/recipes/details/665dc01d16b269ce451423bb",
         img: BurgersImg,
     },
@@ -34,7 +34,7 @@ export const popularRecipes = [
     },
     {
         title: "Beef Tacos",
-        description: "Traditional Mexican beef tacos are made with marinated sliced or shredded beef on soft corn tortillas",
+        description: "Traditional Mexican beef tacos are made with marinated sliced beef on corn tortillas",
         link: "https://cookbook-mern.netlify.app/recipes/details/665db89c16b269ce45142350",
         img: TacosImg,
     },
@@ -46,13 +46,13 @@ export const popularRecipes = [
     },
     {
         title: "Sushi",
-        description: " Enjoy this iconic Japanese-American creation as a satisfying main dish or appetizer",
+        description: "Enjoy this iconic Japanese-American creation as a main dish or appetizer",
         link: "https://cookbook-mern.netlify.app/recipes/details/665dc6a116b269ce451423e0",
         img: SushiImg,
     },
     {
         title: "Chocolate Cookies",
-        description: "Rich cocoa combined with butter and sugar, baked to perfection for a melt-in-your-mouth treat",
+        description: "Rich cocoa combined with butter and sugar, baked for a melt-in-your-mouth treat",
         link: "https://cookbook-mern.netlify.app/recipes/details/665dbc6616b269ce45142389",
         img: CookiesImg,
     },

@@ -7,7 +7,7 @@ import useFetch from "../hooks/useFetch";
 import useRecipeActions from "../hooks/useRecipeActions";
 
 const Recipes = () => {
-    const { data: recipes, loading, error } = useFetch("https://cookbook-mern.onrender.com/recipes", []);
+    const { data: recipes, loading, error, count } = useFetch("https://cookbook-mern.onrender.com/recipes", []);
     const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
 
     const [searchQuery, setSearchQuery] = useState("");

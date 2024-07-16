@@ -30,8 +30,18 @@ router.post("/", async (req, res) => {
 //getting all recipes from db
 router.get("/", async (req, res) => {
     try {
-        const recipes = await RecipeModel.find({});
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+
+        const skip = (page - 1) * limit;
+
+        const recipes = await RecipeModel.find({}).skip(skip).limit(limit);
+
+        const totalRecipes = await RecipeModel.countDocuments({});
+
         return res.status(200).json({
+            currentPage: page,
+            totalPages: Math.ceil(totalRecipes / limit),
             count: recipes.length,
             data: recipes,
         });
@@ -68,37 +78,6 @@ router.get("/:id", async (req, res) => {
 //             return res.status(404).json({ message: "Recipe not found" });
 //         }
 //         return res.status(200).send({ message: "Recipe updated successfully" });
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).send({ message: error.message });
-//     }
-// });
-
-//delete recipe
-// router.delete("/:id", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const result = await RecipeModel.findByIdAndDelete(id);
-
-//         if (!result) {
-//             return req.status(404).json({ message: "Recipe not found" });
-//         }
-
-//         return res.status(200).send({ message: "Recipe deleted successfully" });
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).send({ message: error.message });
-//     }
-// });
-
-//save recipe
-// router.put("/", async (req, res) => {
-//     try {
-//         const recipe = await RecipeModel.findById(req.params.recipeID);
-//         const user = await UserModel.findById(req.params.userID);
-//         user.savedRecipes.push(recipe)
-//         await user.save()
-//         res.status(200).json({savedRecipes: user.savedRecipes})
 //     } catch (error) {
 //         console.log(error.message);
 //         res.status(500).send({ message: error.message });
