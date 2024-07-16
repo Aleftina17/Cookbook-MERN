@@ -1,45 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { useSnackbar } from "notistack";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
-const useFetch = (url, initialState) => {
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+const useFetch = (url, initialState, page, limit) => {
     const [data, setData] = useState(initialState);
-    const [count, setCount] = useState(initialState.count);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [count, setCount] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        let isMounted = true;
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
 
-        axios
-            .get(url)
-            .then((res) => {
-                if (isMounted) {
-                    if (!res.data.data) {
-                        setData(res.data);
-                        setCount(res.count);
-                    } else {
-                        setData(res.data.data);
-                        setCount(res.data.count);
-                    }
-                    setLoading(false);
-                }
-            })
-            .catch((err) => {
-                if (isMounted) {
-                    setError(err);
-                    enqueueSnackbar("Server error.", { variant: "error" });
-                    setLoading(false);
-                }
-            });
-
-        return () => {
-            isMounted = false;
+            try {
+                const response = await axios.get(url, {
+                    params: {
+                        page,
+                        limit,
+                    },
+                });
+                setData(response.data.data);
+                setCount(response.data.count);
+                setTotalPages(response.data.totalPages);
+            } catch (err) {
+                setError(err);
+                enqueueSnackbar(err.message, { variant: "error" });
+            } finally {
+                setLoading(false);
+            }
         };
-    }, [url, enqueueSnackbar]);
 
-    return { data, loading, error, count };
+        fetchData();
+    }, [url, page, limit, enqueueSnackbar]);
+
+    return { data, loading, error, count, totalPages };
 };
 
 export default useFetch;

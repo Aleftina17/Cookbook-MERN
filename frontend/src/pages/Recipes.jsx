@@ -5,20 +5,60 @@ import Pagination from "../components/Pagination";
 import Filter from "../components/Filter";
 import useFetch from "../hooks/useFetch";
 import useRecipeActions from "../hooks/useRecipeActions";
+import axios from "axios";
 
 const Recipes = () => {
-    const { data: recipes, loading, error, count } = useFetch("https://cookbook-mern.onrender.com/recipes", []);
-    const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
-
-    const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(5);
+    const [searchQuery, setSearchQuery] = useState("");
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
+    const [recipes, setRecipes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [count, setCount] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
 
     const filterRef = useRef();
     const filterBgRef = useRef();
+
+    const fetchRecipes = async (page, limit) => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`https://cookbook-mern.onrender.com/recipes`, {
+                params: { page, limit },
+            });
+            setRecipes(response.data.data);
+            setCount(response.data.count);
+            setTotalPages(response.data.totalPages);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    };
+
+    const fetchSearchResults = async (query, page, limit) => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/search`, {
+                params: { query, page, limit },
+            });
+            setRecipes(response.data.data);
+            setCount(response.data.count);
+            setTotalPages(response.data.totalPages);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchRecipes(currentPage, recipesPerPage);
+    }, [currentPage, recipesPerPage]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -32,10 +72,13 @@ const Recipes = () => {
         };
     }, []);
 
-    //Search and filter
     const handleSearchInputChange = (e) => {
         setSearchQuery(e.target.value);
+    };
+
+    const handleSearch = () => {
         setCurrentPage(1);
+        fetchSearchResults(searchQuery, 1, recipesPerPage);
     };
 
     const applyFilters = (categories, time) => {
@@ -44,28 +87,10 @@ const Recipes = () => {
         setCurrentPage(1);
     };
 
-    const filteredRecipes = recipes.filter((recipe) => {
-        const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = selectedCategories.length === 0 || selectedCategories.some((category) => recipe.categories.includes(category));
-        const matchesTime = selectedTime.length === 0 || selectedTime.includes(recipe.cookingTime);
-        return matchesSearch && matchesCategory && matchesTime;
-    });
-
     const handleFilterOpen = () => {
         setIsFilterVisible(!isFilterVisible);
     };
 
-    //Pagination
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
-    const lastRecipeIndex = currentPage * recipesPerPage;
-    const firstRecipeIndex = lastRecipeIndex - recipesPerPage;
-    const currentRecipes = filteredRecipes.slice(firstRecipeIndex, lastRecipeIndex);
-    const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
-
-    // Save or remove recipe
     const toggleSaveRecipe = async (e, recipeID) => {
         e.preventDefault();
         e.stopPropagation();
@@ -80,13 +105,14 @@ const Recipes = () => {
         }
     };
 
+
     return (
         <div className="recipes">
             <div className="container">
                 <div className="recipes_top">
                     <div className="recipes_search">
                         <input type="search" placeholder="Search for recipes" value={searchQuery} onChange={handleSearchInputChange} />
-                        <button>
+                        <button onClick={handleSearch}>
                             <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="25" cy="25" r="25" fill="#97B04F" />
                                 <path
@@ -115,11 +141,11 @@ const Recipes = () => {
 
                 {loading ? (
                     <Loader />
-                ) : filteredRecipes.length === 0 ? (
+                ) : recipes.length === 0 ? (
                     <div className="recipes_empty">No recipes found</div>
                 ) : (
                     <div className="recipes_items">
-                        {currentRecipes.map((recipe, _) => (
+                        {recipes.map((recipe, _) => (
                             <Link to={`/recipes/details/${recipe._id}`} className="recipes_item" key={recipe._id}>
                                 <button onClick={(e) => toggleSaveRecipe(e, recipe._id)} className={`btn btn_like ${isRecipeSaved(recipe._id) ? "liked" : ""}`}>
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,7 +176,7 @@ const Recipes = () => {
                         ))}
                     </div>
                 )}
-                {filteredRecipes.length > recipesPerPage && <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />}
+                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={setCurrentPage} />
             </div>
         </div>
     );

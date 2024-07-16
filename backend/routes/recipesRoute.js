@@ -51,6 +51,23 @@ router.get("/", async (req, res) => {
     }
 });
 
+//search for recipe
+router.get("/recipes/search", async (req, res) => {
+    try {
+        const { query, page = 1, limit = 5 } = req.query;
+        const searchQuery = new RegExp(query, "i");
+        const recipes = await RecipeModel.find({ title: searchQuery })
+            .skip((page - 1) * limit)
+            .limit(Number(limit));
+        const count = await RecipeModel.countDocuments({ title: searchQuery });
+        const totalPages = Math.ceil(count / limit);
+
+        res.json({ data: recipes, count, totalPages });
+    } catch (error) {
+        res.status(500).send("Server error");
+    }
+});
+
 //get one recipe by id
 router.get("/:id", async (req, res) => {
     try {
