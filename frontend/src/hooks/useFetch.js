@@ -22,9 +22,9 @@ const useFetch = (url, initialState, page, limit) => {
                         limit,
                     },
                 });
-                setData(response.data.data);
-                setCount(response.data.count);
-                setTotalPages(response.data.totalPages);
+                setData(response.data);
+                setCount(response.data.count || 0);
+                setTotalPages(response.data.totalPages || 0);
             } catch (err) {
                 setError(err);
                 enqueueSnackbar(err.message, { variant: "error" });
