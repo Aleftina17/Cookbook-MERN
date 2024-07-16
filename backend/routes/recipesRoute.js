@@ -52,7 +52,7 @@ router.get("/", async (req, res) => {
 });
 
 //search for recipe
-router.get("/recipes/search", async (req, res) => {
+router.get("/search", async (req, res) => {
     try {
         const { query, page = 1, limit = 5 } = req.query;
         const searchQuery = new RegExp(query, "i");

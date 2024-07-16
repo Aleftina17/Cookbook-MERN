@@ -105,7 +105,6 @@ const Recipes = () => {
         }
     };
 
-
     return (
         <div className="recipes">
             <div className="container">
