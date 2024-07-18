@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Pagination = ({ currentPage, totalPages, handlePageChange }) => {
     const renderPaginationButtons = () => {
         const buttons = [];
         const maxPageButtons = 3;
+
+        useEffect(() => {
+            window.scrollTo(0, 0);
+        }, [currentPage]);
 
         const createPageButton = (pageNumber) => (
             <button key={pageNumber} className={`pagination-btn pagination-btn-num ${currentPage === pageNumber ? "active" : ""}`} onClick={() => handlePageChange(pageNumber)}>
