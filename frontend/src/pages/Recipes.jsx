@@ -8,7 +8,10 @@ import useRecipeActions from "../hooks/useRecipeActions";
 
 const Recipes = () => {
     const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(() => {
+        const savedPage = localStorage.getItem("currentPage");
+        return savedPage ? +savedPage : 1;
+    });
     const [recipesPerPage] = useState(5);
 
     const [recipes, setRecipes] = useState([]);
@@ -127,6 +130,11 @@ const Recipes = () => {
         }
     };
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        localStorage.setItem("currentPage", page);
+    };
+
     return (
         <div className="recipes">
             <div className="container">
@@ -197,7 +205,7 @@ const Recipes = () => {
                         ))}
                     </div>
                 )}
-                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={setCurrentPage} />
+                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
             </div>
         </div>
     );
