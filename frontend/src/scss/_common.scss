@@ -39,6 +39,11 @@ body {
         font-size: 2rem;
         padding: 2.4rem 0;
 
+        @media (max-width: 48em) {
+            width: 20.8rem;
+            padding: 2.3rem 0;  
+         }
+
         span {
             position: relative;
             z-index: 1;

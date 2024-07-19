@@ -86,7 +86,7 @@ const HeroSection = () => {
             <div className="home_hero__img" ref={imgRef}>
                 <img src={pizzaImg} alt="Pizza" />
             </div>
-            <div className="home_hero__img--2" ref={img2Ref}>
+            <div className="home_hero__img--2 desktop" ref={img2Ref}>
                 <img src={vegBlurredImg} alt="Vegetables" />
             </div>
         </div>

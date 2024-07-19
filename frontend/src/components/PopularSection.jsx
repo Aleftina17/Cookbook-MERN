@@ -15,34 +15,58 @@ const PopularSection = () => {
     const containerRef = useRef(null);
 
     useEffect(() => {
-        const tlPopular = gsap.timeline({
-            scrollTrigger: {
-                trigger: gridRef.current,
-                start: "top bottom",
-                end: "bottom center",
-            },
-        });
+        const mq = window.matchMedia("(min-width: 769px)");
 
-        tlPopular.from(".popular-card", {
-            opacity: 0,
-            duration: 1,
-            y: 200,
-            stagger: 0.3,
-        });
+        const applyAnimations = () => {
+            if (mq.matches) {
+                const tlPopular = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: gridRef.current,
+                        start: "top bottom",
+                        end: "bottom center",
+                    },
+                });
 
-        gsap.to(imgRef.current, {
-            scrollTrigger: {
-                scrub: 1,
-            },
-            y: -250,
-        });
+                tlPopular.from(".popular-card", {
+                    opacity: 0,
+                    duration: 1,
+                    y: 200,
+                    stagger: 0.3,
+                });
 
-        gsap.to(containerRef.current, {
-            scrollTrigger: {
-                scrub: 1,
-            },
-            y: -50,
-        });
+                gsap.to(imgRef.current, {
+                    scrollTrigger: {
+                        scrub: 1,
+                    },
+                    y: -250,
+                });
+
+                gsap.to(containerRef.current, {
+                    scrollTrigger: {
+                        scrub: 1,
+                    },
+                    y: -50,
+                });
+            } else {
+                gsap.set([imgRef.current, containerRef.current], { clearProps: "all" });
+                gsap.set(".popular-card", { clearProps: "all" });
+
+                gsap.to(containerRef.current, {
+                    scrollTrigger: {
+                        scrub: 1,
+                    },
+                    y: -20,
+                });
+            }
+        };
+
+        applyAnimations();
+
+        mq.addEventListener("change", applyAnimations);
+
+        return () => {
+            mq.removeEventListener("change", applyAnimations);
+        };
     }, []);
 
     return (
@@ -59,7 +83,7 @@ const PopularSection = () => {
                 <img src={panImg} alt="Pan with cutlery" />
             </div>
 
-            <div className="home_popular__img--2" ref={img2Ref}>
+            <div className="home_popular__img--2 desktop" ref={img2Ref}>
                 <img src={vegBlurredImg} alt="Vegetables" />
             </div>
         </div>

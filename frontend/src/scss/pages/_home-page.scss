@@ -3,12 +3,22 @@
     overflow-y: clip;
     padding-bottom: 17rem;
 
+    @media (max-width: 48em) {
+        padding-bottom: 2rem;
+        overflow-x: clip;
+    }
+
     &_hero {
         height: 108rem;
         background: rgb(151, 176, 79);
         background: linear-gradient(180deg, rgba(151, 176, 79, 1) 0%, rgba(76, 89, 38, 1) 100%);
         color: #fff;
         position: relative;
+
+        @media (max-width: 48em) {
+            padding-top: 48rem;
+            height: fit-content;
+        }
 
         .container {
             height: 100%;
@@ -21,6 +31,13 @@
             position: relative;
             z-index: 1;
             left: -24rem;
+
+            @media (max-width: 48em) {
+                height: fit-content;
+                gap: 2.8rem;
+                left: -9rem;
+                padding-bottom: 48rem;
+            }
         }
 
         &__title {
@@ -30,10 +47,18 @@
             text-shadow: 2.5rem 0 3.5rem rgba(0, 0, 0, 0.25);
             display: flex;
 
+            @media (max-width: 48em) {
+                font-size: 12rem;
+            }
+
             .letter {
                 margin-left: -4.5rem;
                 will-change: transform;
                 position: relative;
+
+                @media (max-width: 48em) {
+                    margin-left: -1.9rem;
+                }
             }
         }
 
@@ -43,11 +68,21 @@
             font-weight: 400;
             width: 71rem;
             text-align: center;
+
+            @media (max-width: 48em) {
+                font-size: 2.4rem;
+                line-height: 3.6rem;
+                width: 38rem;
+            }
         }
 
         &__btns {
             display: flex;
             gap: 2rem;
+
+            @media (max-width: 48em) {
+                gap: 1.2rem;
+            }
 
             .btn {
                 transition: scale 0.2s;
@@ -86,6 +121,12 @@
             pointer-events: none;
             will-change: transform;
 
+            @media (max-width: 48em) {
+                right: -5rem;
+                height: 88rem;
+                top: 1rem;
+            }
+
             &--2 {
                 position: absolute;
                 z-index: 0;
@@ -104,6 +145,10 @@
         position: relative;
         padding-top: 2rem;
 
+        @media (max-width: 48em) {
+            padding-top: 0;
+        }
+
         .container {
             position: relative;
             z-index: 1;
@@ -120,12 +165,25 @@
             font-weight: 700;
             text-shadow: 2.5rem 0 3.5rem rgba(0, 0, 0, 0.25);
             letter-spacing: -0.1rem;
+
+            @media (max-width: 48em) {
+                margin-bottom: 8rem;
+                font-size: 4.8rem;
+                width: 42rem;
+                margin-left: auto;
+                text-shadow: 0 0 2.5rem rgba(0, 0, 0, 0.35);
+            }
         }
 
         &__grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 4rem;
+
+            @media (max-width: 48em) {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3rem;
+            }
         }
 
         &__img {
@@ -137,6 +195,13 @@
             pointer-events: none;
             z-index: 10;
             will-change: transform;
+
+            @media (max-width: 48em) {
+                height: 84rem;
+                z-index: 0;
+                left: -9rem;
+                top: -31rem;
+            }
 
             &--2 {
                 position: absolute;
