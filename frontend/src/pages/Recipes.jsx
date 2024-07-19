@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import Pagination from "../components/Pagination";
 import Filter from "../components/Filter";
 import useRecipeActions from "../hooks/useRecipeActions";
+import useLoadingWithMessages from "../hooks/useLoadingWithMessages";
 
 const Recipes = () => {
     const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
@@ -24,6 +25,8 @@ const Recipes = () => {
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
+
+    const { loadingMessage, elapsedTime } = useLoadingWithMessages("It may take up to 20 seconds to load recipes...");
 
     const filterRef = useRef();
     const filterBgRef = useRef();
@@ -169,7 +172,7 @@ const Recipes = () => {
                 <Filter applyFilters={applyFilters} closeFilter={() => setIsFilterVisible(false)} />
 
                 {loading ? (
-                    <Loader />
+                    <Loader message={loadingMessage} elapsedTime={elapsedTime}/>
                 ) : recipes.length === 0 ? (
                     <div className="recipes_empty">No recipes found</div>
                 ) : (

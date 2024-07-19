@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { useGetUserID } from "./../hooks/useGetUserID";
 import useRecipeActions from "../hooks/useRecipeActions";
+import useLoadingWithMessages from "../hooks/useLoadingWithMessages";
 
 const SavedRecipes = () => {
     const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
@@ -12,6 +13,9 @@ const SavedRecipes = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(5);
+    
+    const { loadingMessage, elapsedTime } = useLoadingWithMessages("It may take up to 20 seconds to load recipes...");
+
     const userID = useGetUserID();
 
     const handlePageChange = (pageNumber) => {
@@ -36,7 +40,7 @@ const SavedRecipes = () => {
         };
 
         fetchSavedRecipes();
-    }, [userID]);
+    }, [userID]);   
 
     const toggleSaveRecipe = async (e, recipeID) => {
         e.preventDefault();
@@ -60,7 +64,7 @@ const SavedRecipes = () => {
                 </div>
 
                 {loading ? (
-                    <Loader />
+                    <Loader message={loadingMessage} elapsedTime={elapsedTime}/>
                 ) : savedRecipes.length === 0 ? (
                     <div className="recipes_empty">You have not saved any recipes yet</div>
                 ) : (

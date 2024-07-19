@@ -1,6 +1,8 @@
 .loader-wrapper {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
     align-items: center;
     margin: 4rem auto;
     height: 100%;
@@ -14,6 +16,11 @@
     border: 1.2rem solid lightblue;
     border-right-color: orange;
     animation: l2 1s infinite linear;
+
+    &-timer{
+        opacity: 0.6;
+        font-size: 1.8rem;
+    }
 }
 @keyframes l2 {
     to {

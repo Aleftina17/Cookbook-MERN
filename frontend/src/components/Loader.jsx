@@ -1,12 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-const Loader = () => {
+const Loader = ({ message, elapsedTime }) => {
   return (
     <div className="loader-wrapper">
-      <div class="loader"></div>
+      <div className="loader"></div>
+      <div className="loader-message">{message}</div>
+      <div className="loader-timer">Elapsed time: {Math.floor(elapsedTime)} seconds</div>
     </div>
-    
-  )
+  );
 }
 
-export default Loader
+export default Loader;
