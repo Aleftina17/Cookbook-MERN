@@ -88,6 +88,12 @@ const Recipes = () => {
         fetchSearchResults(searchQuery, 1, recipesPerPage);
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
     const applyFilters = (categories, time) => {
         setSelectedCategories(categories);
         setSelectedTime(time);
@@ -143,7 +149,7 @@ const Recipes = () => {
             <div className="container">
                 <div className="recipes_top">
                     <div className="recipes_search">
-                        <input type="search" placeholder="Search for recipes" value={searchQuery} onChange={handleSearchInputChange} />
+                        <input type="search" placeholder="Search for recipes" value={searchQuery} onChange={handleSearchInputChange} onKeyDown={handleKeyDown}/>
                         <button onClick={handleSearch}>
                             <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="25" cy="25" r="25" fill="#97B04F" />

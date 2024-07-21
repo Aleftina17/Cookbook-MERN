@@ -7,6 +7,10 @@
     margin: 4rem auto;
     height: 100%;
     flex: 1;
+
+    @media (max-width: 48em) {
+        margin: 4rem 4rem;
+    }
 }
 
 .loader {
@@ -17,9 +21,27 @@
     border-right-color: orange;
     animation: l2 1s infinite linear;
 
-    &-timer{
+    @media (max-width: 48em) {
+        width: 10rem;
+        border: 1rem solid lightblue;
+        border-right-color: orange;
+    }
+
+    &-message {
+        text-align: center;
+
+        @media (max-width: 48em) {
+            font-size: 2.4rem;
+        }
+    }
+
+    &-timer {
         opacity: 0.6;
         font-size: 1.8rem;
+
+        @media (max-width: 48em) {
+            font-size: 2rem;
+        }
     }
 }
 @keyframes l2 {

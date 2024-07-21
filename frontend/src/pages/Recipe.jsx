@@ -5,11 +5,13 @@ import Loader from "../components/Loader";
 import NotFound from "../components/NotFound";
 import useRecipeActions from "../hooks/useRecipeActions";
 import useFetch from "../hooks/useFetch";
+import useLoadingWithMessages from "../hooks/useLoadingWithMessages";
 
 const Recipe = () => {
     const { id } = useParams();
     const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeActions();
     const { data: response, loading, error } = useFetch(`https://cookbook-mern.onrender.com/recipes/${id}`, null);
+    const { loadingMessage, elapsedTime } = useLoadingWithMessages("It may take up to 20 seconds to load recipe...");
 
     const toggleSaveRecipe = async (e, recipeID) => {
         e.preventDefault();
@@ -31,7 +33,7 @@ const Recipe = () => {
                 {loading ? (
                     <>
                         <BackButton />
-                        <Loader />
+                        <Loader message={loadingMessage} elapsedTime={elapsedTime}/>
                     </>
                 ) : error || !response || !response.recipe ? (
                     <NotFound />

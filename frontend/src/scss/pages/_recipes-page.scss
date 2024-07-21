@@ -1,45 +1,59 @@
-.recipes{
-    background-image: url('./assets/recipes/cookbook-bg.jpg');
+.recipes {
+    background-image: url("./assets/recipes/cookbook-bg.jpg");
     background-repeat: repeat-y;
     background-size: cover;
     padding: 12rem 0;
     min-height: 100vh;
     background-attachment: fixed;
 
-    .container{
+    @media (max-width: 48em) {
+        padding: 14rem 0 8rem;
+        background-image: none;
+    }
+
+    .container {
         padding: 3rem 0 8rem;
         border-radius: 4rem;
-        background-color: #F9F9F9;
+        background-color: #f9f9f9;
         box-shadow: 0 0 1rem 1rem rgba(106, 106, 106, 0.25);
         position: relative;
         min-height: 80vh;
         display: flex;
         flex-direction: column;
+
+        @media (max-width: 48em) {
+           padding: 4rem 0;
+        }
     }
 
-    &_empty{
+    &_empty {
         display: flex;
         flex: 1;
         align-items: center;
         justify-content: center;
         font-size: 3rem;
-        color: #A2A2A2;
+        color: #a2a2a2;
     }
 
-    &_title{
+    &_title {
         font-size: 3.2rem;
-        margin: 0 auto
+        margin: 0 auto;
     }
 
-    &_top{
+    &_top {
         padding: 0 5.4rem;
         display: flex;
         gap: 3rem;
         margin-bottom: 3.4rem;
         height: 6.8rem;
+
+        @media (max-width: 48em) {
+            padding: 0 2rem;
+            gap: 2rem;
+        }
     }
 
-    &_search{
+    &_search {
         height: 100%;
         flex: 1;
         padding: 1rem 1.2rem 1rem 3.4rem;
@@ -51,17 +65,17 @@
         font-size: 2.2rem;
         gap: 2rem;
 
-        input{
+        input {
             width: 100%;
             cursor: text;
 
-            &::placeholder{
-                color: #A2A2A2;
+            &::placeholder {
+                color: #a2a2a2;
             }
         }
 
-        button{
-            background-color: #97B04F;
+        button {
+            background-color: #97b04f;
             width: 5rem;
             height: 5rem;
             border-radius: 100%;
@@ -70,40 +84,60 @@
             justify-content: center;
             flex-shrink: 0;
 
-            svg{
-               width: 100%;
-               height: 100%;
+            svg {
+                width: 100%;
+                height: 100%;
             }
         }
     }
 
-    &_filters-btn{
-            width: 19rem;
-            padding: 2rem 4rem;
-            font-size: 2.4rem;
-            display: flex;
-            gap: 0.6rem;
-            align-items: center;
+    &_filters-btn {
+        width: 19rem;
+        padding: 2rem 4rem;
+        font-size: 2.4rem;
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
 
-            svg{
-                width: 3rem;
-                height: 3rem;
+        @media (max-width: 48em) {
+            width: fit-content;
+            padding: 1.8rem;
+            height: 100%;
+            justify-content: center;
+        }
+
+        svg {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        @media (max-width: 48em) {
+            span {
+                display: none;
             }
+        }
     }
 
-    &_items{
+    &_items {
         display: flex;
         flex-direction: column;
         margin-bottom: 5.8rem;
+
+        @media (max-width: 48em) {
+            margin-bottom: 4rem;
+        }
     }
 
-
-    &_pagination{
+    &_pagination {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         width: fit-content;
         margin: 0 auto;
         margin-top: auto;
+
+        @media (max-width: 48em) {
+            gap: 1rem;
+        }
     }
 }
