@@ -26,7 +26,7 @@ const Recipes = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
 
-    const { loadingMessage, elapsedTime } = useLoadingWithMessages("It may take up to 20 seconds to load recipes...");
+    const { loadingMessage, elapsedTime, startLoading } = useLoadingWithMessages("It may take up to 20 seconds to load recipes...");
 
     const filterRef = useRef();
     const filterBgRef = useRef();
@@ -37,7 +37,7 @@ const Recipes = () => {
 
     const fetchRecipes = async (page, limit) => {
         try {
-            setLoading(true);
+            startLoading();
             const response = await axios.get(`https://cookbook-mern.onrender.com/recipes`, {
                 params: { page, limit },
             });
@@ -53,7 +53,7 @@ const Recipes = () => {
 
     const fetchSearchResults = async (query, page, limit) => {
         try {
-            setLoading(true);
+            startLoading(); 
             const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/search`, {
                 params: { query, page, limit },
             });
@@ -102,7 +102,7 @@ const Recipes = () => {
 
     const fetchFilteredRecipes = async (categories, time) => {
         try {
-            setLoading(true);
+            startLoading();
             const response = await axios.get(`https://cookbook-mern.onrender.com/recipes/filter`, {
                 params: {
                     categories: categories.join(","),
@@ -140,6 +140,7 @@ const Recipes = () => {
     };
 
     const handlePageChange = (page) => {
+        setLoading(true);
         setCurrentPage(page);
         localStorage.setItem("currentPage", page);
     };
